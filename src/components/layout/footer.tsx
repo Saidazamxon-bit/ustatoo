@@ -27,6 +27,8 @@ export function Footer({ settings }: { settings: Settings }) {
           <p className="font-bold">Aloqa</p>
           <a className="block text-muted hover:text-brand-600" href={`tel:${settings.supportPhone.replace(/\s/g, "")}`}>{settings.supportPhone}</a>
           <a className="block text-muted hover:text-brand-600" href={`mailto:${settings.supportEmail}`}>{settings.supportEmail}</a>
+          <Link className="block text-muted hover:text-brand-600" href="/maxfiylik">Maxfiylik siyosati</Link>
+          <Link className="block text-muted hover:text-brand-600" href="/hisobni-ochirish">Hisobni o‘chirish</Link>
           <p className="pt-2 text-xs text-muted">© {new Date().getFullYear()} {settings.platformName}</p>
         </div>
       </div>

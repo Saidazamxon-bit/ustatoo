@@ -37,26 +37,27 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
                   <p className="flex items-center gap-2 truncate font-bold">
                     {u.name}
                     {u.status === "BLOCKED" && <Badge tone="danger">Bloklangan</Badge>}
+                    {u.status === "DELETED" && <Badge>O‘chirilgan</Badge>}
                   </p>
                   <p className="truncate text-sm text-muted">
-                    {phone(u.phone)} · {dateShort(u.createdAt)} · {u._count.clientOrders} buyurtma
+                    {u.status === "DELETED" ? "—" : phone(u.phone)} · {dateShort(u.createdAt)} · {u._count.clientOrders} buyurtma
                   </p>
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <Badge tone={u.role === "ADMIN" ? "info" : u.role === "MASTER" ? "brand" : "neutral"}>{ROLE_LABELS[u.role as Role]}</Badge>
-                {u.master && (
+                {u.master && u.status !== "DELETED" && (
                   <a href={`/ustalar/${u.master.id}`} target="_blank" className="text-xs font-bold text-brand-600">
                     Profil ↗
                   </a>
                 )}
-                {u.id !== me?.id &&
+                {u.id !== me?.id && u.status !== "DELETED" &&
                   (u.status === "ACTIVE" ? (
                     <AdminAction url={`/api/admin/users/${u.id}`} body={{ status: "BLOCKED" }} label="Bloklash" variant="danger" confirm={`${u.name} hisobini bloklaysizmi? U tizimga kira olmaydi.`} success="Foydalanuvchi bloklandi" />
                   ) : (
                     <AdminAction url={`/api/admin/users/${u.id}`} body={{ status: "ACTIVE" }} label="Blokdan chiqarish" variant="outline" success="Faollashtirildi" />
                   ))}
-                {u.id !== me?.id && u.role !== "ADMIN" && (
+                {u.id !== me?.id && u.role !== "ADMIN" && u.status !== "DELETED" && (
                   <AdminAction url={`/api/admin/users/${u.id}`} body={{ role: "ADMIN" }} label="Admin qilish" variant="ghost" confirm={`${u.name} ga administrator huquqlarini berasizmi?`} success="Rol o‘zgartirildi" />
                 )}
                 {u.id !== me?.id && u.role === "ADMIN" && (

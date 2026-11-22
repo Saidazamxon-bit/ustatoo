@@ -10,6 +10,20 @@ export type ChangelogEntry = {
 /** Yangilanishlar tarixi — eng yangisi birinchi */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: "1.3.0",
+    date: "2026-11-22",
+    title: "Android ilovasi",
+    features: [
+      "UstaTop Android ilovasi (APK) — to‘liq ekranli, brauzer panelisiz",
+      "Ikonkani uzoq bosganda tezkor havolalar: qidiruv, buyurtmalar, xabarlar",
+      "Saytdagi havolalar o‘rnatilgan ilovada ochiladi (App Links)",
+      "Profil sozlamalarida hisobni butunlay o‘chirish imkoniyati",
+      "Maxfiylik siyosati sahifasi",
+    ],
+    design: ["Android adaptiv va mavzuli (Android 13+) ikonkalar, Android 12+ ochilish ekrani"],
+    fixes: [],
+  },
+  {
     version: "1.2.0",
     date: "2026-11-22",
     title: "Tungi rejim",

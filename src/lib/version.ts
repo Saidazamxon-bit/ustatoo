@@ -1,6 +1,6 @@
 // Ilova versiyasi. Yangi reliz chiqarilganda APP_VERSION va changelog.ts yangilanadi.
 // BUILD_ID har bir build uchun avtomatik (next.config.ts) — yangilanishni aniqlash shunga tayanadi.
-export const APP_VERSION = "1.2.0";
+export const APP_VERSION = "1.3.0";
 export const BUILD_ID = process.env.NEXT_PUBLIC_BUILD_ID || "dev";
 export const BUILD_TIME = process.env.NEXT_PUBLIC_BUILD_TIME || "";
 

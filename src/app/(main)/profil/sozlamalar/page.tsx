@@ -7,6 +7,7 @@ import { SettingsForm } from "./settings-form";
 import Link from "next/link";
 import { APP_VERSION } from "@/lib/version";
 import { ThemeSelector } from "@/components/providers/theme";
+import { DeleteAccount } from "./delete-account";
 
 export const metadata: Metadata = { title: "Sozlamalar", robots: { index: false } };
 
@@ -41,6 +42,10 @@ export default async function SettingsPage() {
         <a className="block font-semibold text-brand-600" href={`mailto:${s.supportEmail}`}>{s.supportEmail}</a>
       </div>
       <LogoutButton className="mt-5" />
+      <DeleteAccount />
+      <p className="mt-5 text-center text-sm text-muted">
+        <Link href="/maxfiylik" className="font-semibold hover:text-brand-600">Maxfiylik siyosati</Link>
+      </p>
     </div>
   );
 }

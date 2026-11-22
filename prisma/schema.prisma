@@ -21,7 +21,7 @@ model User {
   email        String?  @unique
   passwordHash String
   role         String   @default("CLIENT") // CLIENT | MASTER | ADMIN
-  status       String   @default("ACTIVE") // ACTIVE | BLOCKED
+  status       String   @default("ACTIVE") // ACTIVE | BLOCKED | DELETED
   avatar       String?
   region       String?
   district     String?

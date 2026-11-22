@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ikonkani uzoq bosganda chiqadigan tezkor havolalar -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="search" android:enabled="true" android:icon="@mipmap/ic_launcher_round"
+        android:shortcutShortLabel="@string/shortcutSearch" android:shortcutLongLabel="@string/shortcutSearch">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="uz.ustatop.app"
+            android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity"
+            android:data="https://ustatop-tau.vercel.app/qidiruv?source=twa" />
+    </shortcut>
+    <shortcut android:shortcutId="orders" android:enabled="true" android:icon="@mipmap/ic_launcher_round"
+        android:shortcutShortLabel="@string/shortcutOrders" android:shortcutLongLabel="@string/shortcutOrders">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="uz.ustatop.app"
+            android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity"
+            android:data="https://ustatop-tau.vercel.app/buyurtmalar?source=twa" />
+    </shortcut>
+    <shortcut android:shortcutId="messages" android:enabled="true" android:icon="@mipmap/ic_launcher_round"
+        android:shortcutShortLabel="@string/shortcutMessages" android:shortcutLongLabel="@string/shortcutMessages">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="uz.ustatop.app"
+            android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity"
+            android:data="https://ustatop-tau.vercel.app/xabarlar?source=twa" />
+    </shortcut>
+</shortcuts>

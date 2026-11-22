@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  Bell, Check, Feather, MessageCircle, MousePointerClick, RefreshCw, Rocket, Search, ShoppingBag, Smartphone, WifiOff, Zap, PanelTopClose, ArrowRight, ShieldCheck,
+  Bell, Check, Download, Feather, MessageCircle, MousePointerClick, RefreshCw, Rocket, Search, ShoppingBag, Smartphone, WifiOff, Zap, PanelTopClose, ArrowRight, ShieldCheck,
 } from "lucide-react";
 import { LogoMark } from "@/components/layout/logo";
 import { InstallButton } from "@/components/pwa/install-button";
 import { InstallSteps, PhoneMockup, Reveal } from "@/components/pwa/app-showcase";
 import { APP_VERSION } from "@/lib/version";
+import { ANDROID_APK } from "@/lib/android";
+
 
 export const metadata: Metadata = {
   title: "UstaTop ilovasi — telefoningizga o‘rnating",
@@ -134,6 +136,37 @@ export default function AppPage() {
                   </div>
                 </Reveal>
               ))}
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Android ilovasi (APK) */}
+      <section id="android">
+        <Reveal>
+          <div className="card relative overflow-hidden p-6 sm:p-8">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-green-50 blur-2xl" aria-hidden />
+            <div className="relative grid items-center gap-6 md:grid-cols-[auto_1fr_auto]">
+              <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#3DDC84] text-white shadow-[0_12px_24px_-10px_rgba(61,220,132,0.8)]">
+                <Smartphone className="h-8 w-8" />
+              </span>
+              <div>
+                <p className="text-sm font-bold uppercase tracking-wider text-green-700">Android</p>
+                <h2 className="mt-1 text-2xl font-bold tracking-tight">Android ilovasini yuklab oling</h2>
+                <p className="mt-1.5 max-w-xl text-[15px] text-muted">
+                  To‘liq ekranli native ilova: tezkor havolalar, tizim splash ekrani va saytdagi barcha imkoniyatlar. Google Play’da tez orada.
+                </p>
+                <p className="mt-2 text-xs text-muted">
+                  v{ANDROID_APK.versionName} · {ANDROID_APK.sizeMb} MB · Android {ANDROID_APK.minAndroid}+ · O‘rnatishda “Noma’lum manbalardan o‘rnatish”ga ruxsat bering
+                </p>
+              </div>
+              <a
+                href={ANDROID_APK.url}
+                download
+                className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-ink px-7 font-semibold text-cream transition hover:-translate-y-0.5 active:scale-[0.97]"
+              >
+                <Download className="h-5 w-5" /> APK yuklab olish
+              </a>
             </div>
           </div>
         </Reveal>

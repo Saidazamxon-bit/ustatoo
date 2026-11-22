@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ tizim splash ekrani: cream fon va UstaTop ikonkasi -->
+<resources>
+    <style name="Theme.UstaTop.Launcher" parent="Theme.UstaTop">
+        <item name="android:windowSplashScreenBackground">@color/backgroundColor</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/brand</item>
+    </style>
+</resources>

@@ -89,7 +89,13 @@ export function RegisterForm({ categories, allowMaster }: { categories: { id: st
         <Button type="submit" size="lg" className="w-full" loading={busy}>
           {role === "MASTER" ? "Usta sifatida ro‘yxatdan o‘tish" : "Ro‘yxatdan o‘tish"}
         </Button>
-        <p className="text-center text-xs text-muted">Ro‘yxatdan o‘tib, foydalanish shartlariga rozilik bildirasiz.</p>
+        <p className="text-center text-xs text-muted">
+          Ro‘yxatdan o‘tib,{" "}
+          <Link href="/maxfiylik" className="font-semibold underline underline-offset-2">
+            maxfiylik siyosati
+          </Link>
+          ga rozilik bildirasiz.
+        </p>
       </form>
       <p className="mt-5 text-center text-[15px] text-muted">
         Hisobingiz bormi?{" "}

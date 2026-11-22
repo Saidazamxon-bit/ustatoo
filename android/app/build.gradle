@@ -1,0 +1,87 @@
+// UstaTop — Trusted Web Activity (TWA) Android ilovasi.
+// Sayt (PWA) to‘liq ekranli native ilova sifatida ochiladi; barcha yangilanishlar
+// saytdan avtomatik keladi, ilovani qayta chiqarish shart emas.
+plugins {
+    id "com.android.application"
+}
+
+// Sozlamalar bir joyda: domen o‘zgarsa faqat shu yerni yangilang
+def twa = [
+    applicationId     : "uz.ustatop.app",
+    hostName          : "ustatop-tau.vercel.app",
+    launchUrl         : "/?source=twa",
+    name              : "UstaTop",
+    themeColor        : "#FAF6F1",
+    themeColorDark    : "#14110F",
+    navigationColor   : "#FAF6F1",
+    navigationColorDark: "#14110F",
+    backgroundColor   : "#FAF6F1",
+]
+
+// Imzolash kaliti repozitoriyada saqlanmaydi: android/keystore.properties (gitignore) yoki env
+def keystoreProps = new Properties()
+def keystoreFile = rootProject.file("keystore.properties")
+if (keystoreFile.exists()) keystoreFile.withInputStream { keystoreProps.load(it) }
+def signingValue = { String key, String env -> keystoreProps.getProperty(key) ?: System.getenv(env) }
+
+android {
+    namespace "uz.ustatop.app"
+    compileSdk 36
+
+    defaultConfig {
+        applicationId twa.applicationId
+        minSdk 24
+        targetSdk 36
+        versionCode 2
+        versionName "1.3.0"
+
+        resValue "string", "appName", twa.name
+        resValue "string", "launcherName", twa.name
+        resValue "string", "hostName", twa.hostName
+        resValue "string", "launchUrl", "https://" + twa.hostName + twa.launchUrl
+        resValue "string", "webManifestUrl", "https://" + twa.hostName + "/manifest.webmanifest"
+        resValue "string", "providerAuthority", twa.applicationId + ".fileprovider"
+        resValue "string", "assetStatements",
+            "[{ \\\"relation\\\": [\\\"delegate_permission/common.handle_all_urls\\\"], " +
+            "\\\"target\\\": {\\\"namespace\\\": \\\"web\\\", \\\"site\\\": \\\"https://" + twa.hostName + "\\\"}}]"
+        resValue "color", "colorPrimary", twa.themeColor
+        resValue "color", "colorPrimaryDark", twa.themeColorDark
+        resValue "color", "navigationColor", twa.navigationColor
+        resValue "color", "navigationColorDark", twa.navigationColorDark
+        resValue "color", "backgroundColor", twa.backgroundColor
+        manifestPlaceholders = [hostName: twa.hostName]
+    }
+
+    signingConfigs {
+        release {
+            def storePath = signingValue("storeFile", "USTATOP_KEYSTORE")
+            if (storePath) {
+                storeFile file(storePath)
+                storePassword signingValue("storePassword", "USTATOP_KEYSTORE_PASSWORD")
+                keyAlias signingValue("keyAlias", "USTATOP_KEY_ALIAS")
+                keyPassword signingValue("keyPassword", "USTATOP_KEY_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            if (signingConfigs.release.storeFile) signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        resValues true
+    }
+}
+
+dependencies {
+    implementation "com.google.androidbrowserhelper:androidbrowserhelper:2.7.4"
+}

@@ -80,7 +80,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
           <div className="mt-3 flex gap-2 rounded-2xl bg-red-50 p-3 text-sm text-red-700">
             <XCircle className="h-5 w-5 shrink-0" />
             <span>
-              {order.cancelledBy === "MASTER" ? "Usta rad etdi" : order.cancelledBy === "ADMIN" ? "Administrator bekor qildi" : "Mijoz bekor qildi"}
+              {order.cancelledBy === "MASTER" ? "Usta rad etdi" : order.cancelledBy === "ADMIN" ? "Administrator bekor qildi" : order.cancelledBy === "SYSTEM" ? "Avtomatik bekor qilindi" : "Mijoz bekor qildi"}
               {order.cancelReason && `: ${order.cancelReason}`}
             </span>
           </div>
