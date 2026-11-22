@@ -8,7 +8,7 @@ faqat ikonka, nom, domen yoki Android sozlamalari o‘zgarganda kerak.
 | | |
 |---|---|
 | Paket nomi | `uz.ustatop.app` |
-| Versiya | `1.3.0` (versionCode `2`) |
+| Versiya | `1.3.1` (versionCode `3`) |
 | minSdk / targetSdk | 24 (Android 7.0) / 36 |
 | Ochiladigan manzil | `/?source=twa` |
 | Domen tasdig‘i | `/.well-known/assetlinks.json` (`src/app/.well-known/assetlinks.json/route.ts`) |
@@ -38,6 +38,16 @@ cp app/build/outputs/apk/release/app-release.apk ../public/downloads/ustatop-and
 ```
 
 va `src/lib/android.ts` dagi `versionName`, `versionCode`, `sizeMb` qiymatlarini yangilang.
+
+## Saytdan tarqatish (Play Market’siz)
+
+Asosiy tarqatish usuli — saytning o‘zi: `https://ustatop-tau.vercel.app/android` (yoki to‘g‘ridan-to‘g‘ri fayl: `/apk`).
+Android foydalanuvchilariga saytda “Yuklab olish” taklifi chiqadi, `/ilova#android` da 4 qadamli yo‘riqnoma va QR kod bor.
+
+- Yangi APK chiqarganda `versionCode` ni oshiring va **har doim shu kalit bilan imzolang** — shunda
+  foydalanuvchilar eski versiya ustidan yangilay oladi (boshqa kalit bilan imzolangan APK o‘rnatilmaydi).
+- `src/lib/android.ts` dagi `sha256` ni yangilang: `sha256sum public/downloads/ustatop-android.apk`.
+- Sayt kontenti ilovada avtomatik yangilanadi, APK’ni qayta yuklab olish kamdan-kam kerak bo‘ladi.
 
 ## Google Play’ga chiqarish
 

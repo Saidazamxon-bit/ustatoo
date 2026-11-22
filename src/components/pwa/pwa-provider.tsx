@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { runStorageMigrations, store } from "@/lib/client-storage";
+import { isAndroidAppContext } from "@/lib/android";
 
 /** Chrome/Edge/Samsung Internet "beforeinstallprompt" hodisasi */
 type BeforeInstallPromptEvent = Event & {
@@ -16,6 +17,8 @@ type PwaState = {
   platform: Platform;
   iosBrowser: IosBrowser;
   isStandalone: boolean;
+  /** UstaTop Android ilovasi (TWA) ichida ochilgan */
+  isAndroidApp: boolean;
   /** Native o‘rnatish oynasi mavjud (Android/desktop Chromium) */
   canPromptInstall: boolean;
   /** O‘rnatish mumkin: native prompt yoki iOS yo‘riqnomasi */
@@ -67,6 +70,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
   const [platform, setPlatform] = useState<Platform>("desktop");
   const [iosBrowser, setIosBrowser] = useState<IosBrowser>("safari");
   const [isStandalone, setIsStandalone] = useState(false);
+  const [isAndroidApp, setIsAndroidApp] = useState(false);
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null);
   const [installed, setInstalled] = useState(false);
   const [iosGuideOpen, setIosGuideOpen] = useState(false);
@@ -83,14 +87,24 @@ export function PwaProvider({ children }: { children: ReactNode }) {
     const p = detectPlatform();
     setPlatform(p.platform);
     setIosBrowser(p.iosBrowser);
-    const standalone = detectStandalone();
+    // Android ilovasi: birinchi ochilishda ?source=twa keladi, keyingi sahifalar uchun eslab qolamiz
+    let twa = isAndroidAppContext(location.search, document.referrer);
+    try {
+      twa ||= sessionStorage.getItem("ut:twa") === "1";
+    } catch {}
+    if (twa) {
+      try { sessionStorage.setItem("ut:twa", "1"); } catch {}
+      store.set("pwa:androidApp", true);
+    }
+    setIsAndroidApp(twa);
+    const standalone = twa || detectStandalone();
     setIsStandalone(standalone);
     if (standalone) store.set("pwa:installed", true);
     setInstalled(standalone || store.get("pwa:installed", false));
     setOnline(navigator.onLine);
 
     const mq = window.matchMedia("(display-mode: standalone)");
-    const onMode = () => setIsStandalone(detectStandalone());
+    const onMode = () => setIsStandalone(twa || detectStandalone());
     mq.addEventListener?.("change", onMode);
 
     const onBip = (e: Event) => {
@@ -231,6 +245,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
       platform,
       iosBrowser,
       isStandalone,
+      isAndroidApp,
       canPromptInstall: Boolean(deferred),
       installAvailable: !isStandalone && (Boolean(deferred) || platform === "ios"),
       installed,
@@ -244,7 +259,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
       swSupported,
       online,
     }),
-    [platform, iosBrowser, isStandalone, deferred, installed, promptInstall, iosGuideOpen, waiting, updating, applyUpdate, checkForUpdate, swSupported, online],
+    [platform, iosBrowser, isStandalone, isAndroidApp, deferred, installed, promptInstall, iosGuideOpen, waiting, updating, applyUpdate, checkForUpdate, swSupported, online],
   );
 
   return <PwaCtx.Provider value={value}>{children}</PwaCtx.Provider>;

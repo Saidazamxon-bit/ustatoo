@@ -8,6 +8,9 @@ import { InstallButton } from "@/components/pwa/install-button";
 import { InstallSteps, PhoneMockup, Reveal } from "@/components/pwa/app-showcase";
 import { APP_VERSION } from "@/lib/version";
 import { ANDROID_APK } from "@/lib/android";
+import { siteUrl } from "@/lib/utils";
+import QRCode from "qrcode";
+import { ScrollTo } from "@/components/pwa/scroll-to";
 
 
 export const metadata: Metadata = {
@@ -33,7 +36,16 @@ const BENEFITS = [
   { icon: RefreshCw, title: "Avtomatik yangilanish", text: "Yangi versiya o‘zi yuklanadi." },
 ];
 
-export default function AppPage() {
+const APK_STEPS = [
+  { title: "Yuklab oling", text: "“APK yuklab olish” tugmasini bosing. Fayl hajmi atigi " + ANDROID_APK.sizeMb + " MB." },
+  { title: "Faylni oching", text: "Yuklab olish tugagach, bildirishnomadagi yoki “Yuklanmalar” papkasidagi UstaTop.apk faylini bosing." },
+  { title: "Ruxsat bering", text: "Telefon so‘rasa: “Sozlamalar” → “Ushbu manbadan ruxsat berish” ni yoqing va orqaga qayting." },
+  { title: "O‘rnating", text: "“O‘rnatish” tugmasini bosing. UstaTop ikonkasi bosh ekraningizda paydo bo‘ladi." },
+];
+
+export default async function AppPage({ searchParams }: { searchParams: Promise<{ yuklandi?: string }> }) {
+  const { yuklandi } = await searchParams;
+  const qrSvg = await QRCode.toString(siteUrl(ANDROID_APK.shortPath), { type: "svg", margin: 0, errorCorrectionLevel: "M", color: { dark: "#1F1A17", light: "#00000000" } });
   return (
     <div className="space-y-20 pb-10 pt-[max(1.25rem,env(safe-area-inset-top))] lg:space-y-28 lg:pt-12">
       <noscript>
@@ -141,32 +153,70 @@ export default function AppPage() {
         </Reveal>
       </section>
 
-      {/* Android ilovasi (APK) */}
-      <section id="android">
+      {/* Android ilovasi (APK) — Play Market’siz, to‘g‘ridan-to‘g‘ri saytdan */}
+      <section id="android" className="scroll-mt-24">
         <Reveal>
           <div className="card relative overflow-hidden p-6 sm:p-8">
-            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-green-50 blur-2xl" aria-hidden />
+            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-green-50 blur-2xl dark:bg-green-500/10" aria-hidden />
+            {yuklandi && <ScrollTo id="android" />}
+            {yuklandi && (
+              <p className="relative mb-5 flex items-center gap-2 rounded-2xl bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 dark:bg-green-500/10 dark:text-green-400">
+                <Check className="h-4 w-4 shrink-0" /> Yuklab olish boshlandi. Endi quyidagi qadamlarni bajaring.
+              </p>
+            )}
             <div className="relative grid items-center gap-6 md:grid-cols-[auto_1fr_auto]">
               <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#3DDC84] text-white shadow-[0_12px_24px_-10px_rgba(61,220,132,0.8)]">
                 <Smartphone className="h-8 w-8" />
               </span>
               <div>
-                <p className="text-sm font-bold uppercase tracking-wider text-green-700">Android</p>
+                <p className="text-sm font-bold uppercase tracking-wider text-green-700 dark:text-green-400">Android · Play Market shart emas</p>
                 <h2 className="mt-1 text-2xl font-bold tracking-tight">Android ilovasini yuklab oling</h2>
                 <p className="mt-1.5 max-w-xl text-[15px] text-muted">
-                  To‘liq ekranli native ilova: tezkor havolalar, tizim splash ekrani va saytdagi barcha imkoniyatlar. Google Play’da tez orada.
+                  To‘liq ekranli ilova: brauzer panelisiz, tezkor havolalar va saytdagi barcha imkoniyatlar. Ilova ichidagi yangiliklar avtomatik keladi — qayta yuklab olish shart emas.
                 </p>
                 <p className="mt-2 text-xs text-muted">
-                  v{ANDROID_APK.versionName} · {ANDROID_APK.sizeMb} MB · Android {ANDROID_APK.minAndroid}+ · O‘rnatishda “Noma’lum manbalardan o‘rnatish”ga ruxsat bering
+                  v{ANDROID_APK.versionName} · {ANDROID_APK.sizeMb} MB · Android {ANDROID_APK.minAndroid} va yuqori
                 </p>
               </div>
-              <a
-                href={ANDROID_APK.url}
-                download
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-ink px-7 font-semibold text-cream transition hover:-translate-y-0.5 active:scale-[0.97]"
-              >
-                <Download className="h-5 w-5" /> APK yuklab olish
-              </a>
+              <div className="flex flex-col items-stretch gap-2 sm:items-center">
+                <a
+                  href={ANDROID_APK.url}
+                  download
+                  className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-ink px-7 font-semibold text-cream transition hover:-translate-y-0.5 active:scale-[0.97]"
+                >
+                  <Download className="h-5 w-5" /> APK yuklab olish
+                </a>
+                <p className="text-center text-xs text-muted">
+                  Qisqa havola: <span className="font-semibold text-ink">{siteUrl(ANDROID_APK.shortPath).replace(/^https?:\/\//, "")}</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="relative mt-8 grid gap-6 lg:grid-cols-[1fr_auto]">
+              <ol className="grid gap-3 sm:grid-cols-2">
+                {APK_STEPS.map((st, i) => (
+                  <li key={st.title} className="flex gap-3 rounded-2xl bg-cream p-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-bold text-white">{i + 1}</span>
+                    <div>
+                      <p className="font-bold">{st.title}</p>
+                      <p className="mt-0.5 text-sm text-muted">{st.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <div className="hidden flex-col items-center justify-center rounded-2xl bg-cream p-5 text-center lg:flex">
+                <div className="h-36 w-36 rounded-xl bg-white p-2.5" dangerouslySetInnerHTML={{ __html: qrSvg }} aria-label="Android ilovasi uchun QR kod" role="img" />
+                <p className="mt-3 max-w-[10rem] text-xs font-semibold text-muted">Telefon kamerasi bilan skanerlang</p>
+              </div>
+            </div>
+
+            <div className="relative mt-4 flex gap-3 rounded-2xl border border-line p-4 text-sm text-muted">
+              <ShieldCheck className="h-5 w-5 shrink-0 text-green-600" />
+              <p>
+                Ilova Play Market’dan bo‘lmagani uchun Google Play Protect “Noma’lum ilova” deb ogohlantirishi mumkin — bu oddiy holat. “Batafsil” → “Baribir o‘rnatish” ni bosing.
+                Faylni faqat shu sahifadan yuklab oling. Ilova faqat {siteUrl().replace(/^https?:\/\//, "")} saytini ochadi va qo‘shimcha ruxsatlar so‘ramaydi.
+                <span className="mt-1 block break-all font-mono text-[11px]">SHA-256: {ANDROID_APK.sha256}</span>
+              </p>
             </div>
           </div>
         </Reveal>

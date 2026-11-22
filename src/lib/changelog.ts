@@ -10,6 +10,18 @@ export type ChangelogEntry = {
 /** Yangilanishlar tarixi — eng yangisi birinchi */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: "1.3.1",
+    date: "2026-11-22",
+    title: "Android ilovasi — to‘g‘ridan-to‘g‘ri saytdan",
+    features: [
+      "Android telefonlarda “Yuklab olish” taklifi: ilova Play Market’siz, saytdan o‘rnatiladi",
+      "4 qadamli o‘rnatish yo‘riqnomasi, kompyuterda QR kod va qisqa havola (/android)",
+      "Android ilovasi ichida o‘rnatish takliflari ko‘rsatilmaydi",
+    ],
+    design: [],
+    fixes: ["Android ilovasi Chrome o‘rnatilmagan telefonlarda ham ochiladi (internet ruxsati qo‘shildi)"],
+  },
+  {
     version: "1.3.0",
     date: "2026-11-22",
     title: "Android ilovasi",

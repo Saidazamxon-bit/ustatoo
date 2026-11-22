@@ -43,6 +43,22 @@ const nextConfig: NextConfig = {
         source: "/manifest.webmanifest",
         headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
       },
+      {
+        // Android ilovasi: yangi versiya chiqqanda eski fayl keshdan berilmasin, nomi tushunarli bo‘lsin
+        source: "/downloads/ustatop-android.apk",
+        headers: [
+          { key: "Content-Type", value: "application/vnd.android.package-archive" },
+          { key: "Content-Disposition", value: 'attachment; filename="UstaTop.apk"' },
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+        ],
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      // Ulashish uchun qisqa havolalar
+      { source: "/android", destination: "/ilova#android", permanent: false },
+      { source: "/apk", destination: "/downloads/ustatop-android.apk", permanent: false },
     ];
   },
 };

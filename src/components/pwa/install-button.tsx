@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Download, CheckCircle2, MonitorSmartphone } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonClass } from "@/components/ui/button";
+import { ANDROID_APK } from "@/lib/android";
 import { Modal } from "@/components/ui/modal";
 import { useToast } from "@/components/providers/toast";
 import { usePwa } from "./pwa-provider";
@@ -10,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Qurilmaga mos "Ilovani o‘rnatish" tugmasi:
- * Android/Chromium — native oyna, iOS — animatsion yo‘riqnoma, boshqalar — qo‘lda o‘rnatish ko‘rsatmasi.
+ * Android — saytdan APK yuklab olish, kompyuter Chromium — native oyna, iOS — animatsion yo‘riqnoma, boshqalar — qo‘lda o‘rnatish ko‘rsatmasi.
  */
 export function InstallButton({
   className,
@@ -32,6 +33,21 @@ export function InstallButton({
       <span className={cn("inline-flex h-14 items-center justify-center gap-2 rounded-full bg-green-50 px-7 font-semibold text-green-700", className)}>
         <CheckCircle2 className="h-5 w-5" /> Ilova o‘rnatilgan
       </span>
+    );
+  }
+
+  // Android: ilovani to‘g‘ridan-to‘g‘ri saytdan (APK) yuklab olish va o‘rnatish yo‘riqnomasiga o‘tish
+  if (platform === "android") {
+    return (
+      <a
+        href={ANDROID_APK.url}
+        download
+        className={buttonClass(variant, size, cn("group", className))}
+        onClick={() => setTimeout(() => document.getElementById("android")?.scrollIntoView({ behavior: "smooth", block: "start" }), 300)}
+      >
+        <Download className="h-5 w-5 transition group-hover:translate-y-0.5" />
+        {label === "Ilovani o‘rnatish" ? "Ilovani yuklab olish" : label}
+      </a>
     );
   }
 

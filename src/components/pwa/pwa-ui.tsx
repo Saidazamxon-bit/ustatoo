@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Download, RefreshCw, Sparkles, Wifi, WifiOff, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonClass } from "@/components/ui/button";
+import { ANDROID_APK } from "@/lib/android";
 import { LogoMark } from "@/components/layout/logo";
 import { useSession } from "@/components/providers/session";
 import { store } from "@/lib/client-storage";
@@ -21,28 +22,32 @@ const NO_BANNER = [/^\/xabarlar\/.+/, /^\/buyurtma\/yangi/, /^\/tolov\//, /^\/ki
 const floating = "fixed inset-x-3 bottom-[calc(5.6rem+env(safe-area-inset-bottom))] z-[70] mx-auto max-w-md lg:inset-x-auto lg:bottom-6 lg:right-6 lg:w-[400px]";
 
 function InstallBanner() {
-  const { installAvailable, installed, promptInstall, platform, updateReady } = usePwa();
+  const { installAvailable, installed, promptInstall, platform, updateReady, isStandalone, isAndroidApp } = usePwa();
   const pathname = usePathname();
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
+  // Android’da asosiy yo‘l — saytdan APK yuklab olish (Play Market shart emas)
+  const android = platform === "android" && !isStandalone && !isAndroidApp;
+  const offer = android ? !installed : installAvailable && !installed;
 
   useEffect(() => {
-    if (!installAvailable || installed) return setVisible(false);
+    if (!offer) return setVisible(false);
     if (NO_BANNER.some((r) => r.test(pathname))) return setVisible(false);
     if (Date.now() < store.get<number>("pwa:snoozeUntil", 0)) return;
     const id = setTimeout(() => setVisible(true), SHOW_DELAY_MS);
     return () => clearTimeout(id);
-  }, [installAvailable, installed, pathname]);
+  }, [offer, pathname]);
 
   if (!visible || updateReady) return null;
-  const later = () => {
-    store.set("pwa:snoozeUntil", Date.now() + SNOOZE_MS);
+  const later = (ms = SNOOZE_MS) => {
+    store.set("pwa:snoozeUntil", Date.now() + ms);
     setVisible(false);
   };
   return (
     <div role="dialog" aria-label="Ilovani o‘rnatish taklifi" className={cn(floating, "animate-slide-up")}>
       <div className="relative overflow-hidden rounded-[1.75rem] bg-surface p-4 shadow-[var(--shadow-lift)] ring-1 ring-black/[0.04]">
         <div className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full bg-brand-200/60 blur-2xl" />
-        <button onClick={later} aria-label="Yopish" className="absolute right-3 top-3 rounded-full p-1.5 text-muted hover:bg-cream">
+        <button onClick={() => later()} aria-label="Yopish" className="absolute right-3 top-3 rounded-full p-1.5 text-muted hover:bg-cream">
           <X className="h-4 w-4" />
         </button>
         <div className="relative flex gap-3.5 pr-6">
@@ -53,29 +58,46 @@ function InstallBanner() {
             </span>
           </span>
           <div>
-            <p className="text-[16px] font-bold leading-tight">UstaTop’ni ilova sifatida o‘rnating!</p>
+            <p className="text-[16px] font-bold leading-tight">{android ? "UstaTop Android ilovasi" : "UstaTop’ni ilova sifatida o‘rnating!"}</p>
             <p className="mt-1 text-[13px] leading-snug text-muted">
-              UstaTop’dan tezroq foydalaning. Ilovani bosh ekraningizga qo‘shing va barcha xizmatlardan qulay foydalaning.
+              {android
+                ? `Ilovani to‘g‘ridan-to‘g‘ri saytdan yuklab oling — ${ANDROID_APK.sizeMb} MB, Play Market shart emas.`
+                : "UstaTop’dan tezroq foydalaning. Ilovani bosh ekraningizga qo‘shing va barcha xizmatlardan qulay foydalaning."}
             </p>
           </div>
         </div>
         <div className="relative mt-3.5 flex gap-2">
-          <Button
-            className="flex-1"
-            onClick={async () => {
-              const r = await promptInstall();
-              if (r !== "unavailable") setVisible(false);
-            }}
-            icon={<Download className="h-4 w-4" />}
-          >
-            Ilovani o‘rnatish
-          </Button>
-          <Button variant="secondary" onClick={later}>
+          {android ? (
+            <a
+              href={ANDROID_APK.url}
+              download
+              className={buttonClass("primary", "md", "flex-1")}
+              onClick={() => {
+                later(14 * 24 * 60 * 60 * 1000);
+                // Yuklab olish boshlangach, o‘rnatish yo‘riqnomasini ko‘rsatamiz
+                setTimeout(() => router.push("/ilova?yuklandi=1#android"), 400);
+              }}
+            >
+              <Download className="h-4 w-4" /> Yuklab olish
+            </a>
+          ) : (
+            <Button
+              className="flex-1"
+              onClick={async () => {
+                const r = await promptInstall();
+                if (r !== "unavailable") setVisible(false);
+              }}
+              icon={<Download className="h-4 w-4" />}
+            >
+              Ilovani o‘rnatish
+            </Button>
+          )}
+          <Button variant="secondary" onClick={() => later()}>
             Keyinroq
           </Button>
         </div>
-        <Link href="/ilova" onClick={() => setVisible(false)} className="relative mt-2 block text-center text-xs font-semibold text-muted hover:text-brand-600">
-          {platform === "ios" ? "iPhone’ga qanday o‘rnatiladi?" : "Ilova haqida batafsil"}
+        <Link href={android ? "/ilova#android" : "/ilova"} onClick={() => setVisible(false)} className="relative mt-2 block text-center text-xs font-semibold text-muted hover:text-brand-600">
+          {platform === "ios" ? "iPhone’ga qanday o‘rnatiladi?" : android ? "Qanday o‘rnatiladi?" : "Ilova haqida batafsil"}
         </Link>
       </div>
     </div>
