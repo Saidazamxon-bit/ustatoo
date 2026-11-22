@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, ChevronLeft, Minus, Plus, CalendarDays, MapPin, FileText, ListChecks, CreditCard } from "lucide-react";
 import { Avatar, Rating, SmartImage } from "@/components/ui/misc";
@@ -14,6 +14,21 @@ import { REGION_NAMES, getDistricts } from "@/lib/regions";
 import { money, priceWithUnit, weekdayShort } from "@/lib/format";
 import { PRICE_UNIT_LABELS, type PaymentMethod, type PriceUnit } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { store } from "@/lib/client-storage";
+
+type WizardDraft = {
+  qty: Record<string, number>;
+  description: string;
+  images: string[];
+  region: string;
+  district: string;
+  address: string;
+  day: number;
+  slot: string;
+  method: PaymentMethod;
+  step: number;
+};
+const DRAFT_TTL = 7 * 24 * 60 * 60 * 1000;
 
 type Master = {
   id: string;
@@ -88,6 +103,37 @@ export function OrderWizard({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
 
+  // Qoralama: forma holati avtomatik saqlanadi va qayta ochilganda tiklanadi
+  const draftKey = `draft:order:${master.id}`;
+  const draftReady = useRef(false);
+  useEffect(() => {
+    const d = store.get<{ v: WizardDraft; t: number } | null>(draftKey, null);
+    if (d && Date.now() - d.t < DRAFT_TTL && (d.v.description || d.v.step > 0)) {
+      const validQty = Object.fromEntries(Object.entries(d.v.qty).filter(([id]) => services.some((s) => s.id === id)));
+      if (Object.keys(validQty).length) setQty(validQty);
+      setDescription(d.v.description);
+      setImages(d.v.images);
+      setRegion(d.v.region);
+      setDistrict(d.v.district);
+      setAddress(d.v.address);
+      if (d.v.day < days.length) setDay(d.v.day);
+      setSlot(d.v.slot);
+      setMethod(d.v.method);
+      setStep(Math.min(Math.max(d.v.step, 0), STEPS.length - 1));
+      toast.info("Qoralama tiklandi", "Avval to‘ldirgan ma’lumotlaringiz saqlangan");
+    }
+    draftReady.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (!draftReady.current) return;
+    const id = setTimeout(() => {
+      const v: WizardDraft = { qty, description, images, region, district, address, day, slot, method, step };
+      store.set(draftKey, { v, t: Date.now() });
+    }, 300);
+    return () => clearTimeout(id);
+  }, [draftKey, qty, description, images, region, district, address, day, slot, method, step]);
+
   const selected = services.filter((s) => qty[s.id]);
   const total = selected.reduce((sum, s) => sum + s.price * (qty[s.id] ?? 0), 0);
 
@@ -139,6 +185,7 @@ export function OrderWizard({
         scheduledAt: scheduledAt!.toISOString(),
         paymentMethod: method,
       });
+      store.remove(draftKey);
       toast.success("Buyurtma yuborildi!", `${order.code} — usta javobini kuting`);
       router.replace(method === "CASH" ? `/buyurtmalar/${order.id}?yangi=1` : `/tolov/${order.id}`);
     } catch (e) {

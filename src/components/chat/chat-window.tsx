@@ -8,6 +8,7 @@ import { Avatar } from "@/components/ui/misc";
 import { IconCircle } from "@/components/ui/button";
 import { api, uploadImage } from "@/lib/api-client";
 import { useRealtime, useSession } from "@/components/providers/session";
+import { useDraft } from "@/lib/client-storage";
 import { useToast } from "@/components/providers/toast";
 import { dateLong, time } from "@/lib/format";
 import { ORDER_STATUS_LABELS, type OrderStatus } from "@/lib/constants";
@@ -29,7 +30,8 @@ export function ChatWindow({
   initial: Msg[];
 }) {
   const [messages, setMessages] = useState<Msg[]>(initial);
-  const [text, setText] = useState("");
+  // Yozilayotgan xabar qoralama sifatida saqlanadi (yangilanish yoki qayta yuklashda yo‘qolmaydi)
+  const [text, setText] = useDraft(`chat:${conversationId}`, "");
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [hasMore, setHasMore] = useState(initial.length >= 50);

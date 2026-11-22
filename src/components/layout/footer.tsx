@@ -15,6 +15,8 @@ export function Footer({ settings }: { settings: Settings }) {
           <Link className="block text-muted hover:text-brand-600" href="/kategoriyalar">Kategoriyalar</Link>
           <Link className="block text-muted hover:text-brand-600" href="/qidiruv?saralash=rating">Eng yaxshi ustalar</Link>
           <Link className="block text-muted hover:text-brand-600" href="/buyurtmalar">Buyurtmalarim</Link>
+          <Link className="block text-muted hover:text-brand-600" href="/ilova">UstaTop ilovasi</Link>
+          <Link className="block text-muted hover:text-brand-600" href="/yangilanishlar">Yangilanishlar</Link>
         </div>
         <div className="space-y-2">
           <p className="font-bold">Ustalar uchun</p>

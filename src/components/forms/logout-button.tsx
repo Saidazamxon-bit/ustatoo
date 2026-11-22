@@ -5,6 +5,15 @@ import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { api } from "@/lib/api-client";
 import { cn } from "@/lib/utils";
+import { clearUserDrafts } from "@/lib/client-storage";
+
+/** Chiqish/kirishda boshqa foydalanuvchi ko‘rmasligi kerak bo‘lgan lokal ma'lumotlarni tozalash */
+export function clearPrivateClientData() {
+  clearUserDrafts();
+  try {
+    navigator.serviceWorker?.controller?.postMessage({ type: "CLEAR_USER_CACHE" });
+  } catch {}
+}
 
 export function LogoutButton({ className }: { className?: string }) {
   const [busy, setBusy] = useState(false);
@@ -16,6 +25,7 @@ export function LogoutButton({ className }: { className?: string }) {
       onClick={async () => {
         setBusy(true);
         await api.post("/api/auth/logout").catch(() => {});
+        clearPrivateClientData();
         router.replace("/");
         router.refresh();
       }}

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { api, ApiError } from "@/lib/api-client";
 import { useToast } from "@/components/providers/toast";
+import { clearPrivateClientData } from "@/components/forms/logout-button";
 
 const DEMO = [
   { label: "Mijoz", phone: "+998 90 123 45 67", password: "demo123", icon: UserRound },
@@ -35,6 +36,7 @@ export function LoginForm() {
     setErrors({});
     try {
       const res = await api.post<{ role: string }>("/api/auth/login", { phone: p, password: pw });
+      clearPrivateClientData();
       toast.success("Xush kelibsiz!");
       const fallback = res.role === "ADMIN" ? "/admin" : res.role === "MASTER" ? "/usta/panel" : "/";
       router.replace(safeNext(sp.get("next"), fallback));

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  Bell, ChevronRight, Heart, History, MessageCircle, Settings, ShoppingBag, UserRound, LayoutDashboard, Wrench, Images, CalendarClock, Wallet, Star, ShieldCheck, Pencil,
+  Bell, ChevronRight, Heart, History, MessageCircle, Settings, ShoppingBag, UserRound, LayoutDashboard, Wrench, Images, CalendarClock, Wallet, Star, ShieldCheck, Pencil, Smartphone, RefreshCw,
 } from "lucide-react";
+import { APP_VERSION } from "@/lib/version";
 import { requirePageUser } from "@/server/auth";
 import { db } from "@/server/db";
 import { unreadMessagesCount } from "@/server/services/chat";
@@ -104,6 +105,12 @@ export default async function ProfilePage() {
         <MenuItem href="/xabarlar" icon={MessageCircle} label="Xabarlar" badge={unreadMsg} />
         <MenuItem href="/profil/bildirishnomalar" icon={Bell} label="Bildirishnomalar" badge={unreadNotif} />
         <MenuItem href="/profil/sozlamalar" icon={Settings} label="Sozlamalar" />
+      </nav>
+
+      <h2 className="mb-2 px-1 text-sm font-bold uppercase tracking-wider text-muted">Ilova</h2>
+      <nav className="card mb-5 divide-y divide-line overflow-hidden">
+        <MenuItem href="/ilova" icon={Smartphone} label="UstaTop ilovasi" />
+        <MenuItem href="/yangilanishlar" icon={RefreshCw} label="Yangilanishlar" hint={`v${APP_VERSION}`} />
       </nav>
       <LogoutButton />
     </div>
