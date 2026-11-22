@@ -39,13 +39,13 @@ export function BottomNav() {
               aria-current={active ? "page" : undefined}
               className={cn(
                 "relative flex h-11 items-center justify-center rounded-full transition-all duration-300 sm:h-12",
-                active ? "gap-1.5 whitespace-nowrap bg-brand-500 px-3.5 text-white shadow-[var(--shadow-brand)]" : "w-11 bg-white text-ink-2 hover:text-brand-600 sm:w-12",
+                active ? "gap-1.5 whitespace-nowrap bg-brand-500 px-3.5 text-white shadow-[var(--shadow-brand)]" : "w-11 bg-surface text-ink-2 hover:text-brand-600 sm:w-12",
               )}
             >
               <Icon className="h-5 w-5" strokeWidth={active ? 2.3 : 1.9} />
               {active && <span className="text-[12.5px] font-semibold animate-fade-in">{label}</span>}
               {badge > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[11px] font-bold text-white ring-2 ring-white animate-pop">
+                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[11px] font-bold text-cream ring-2 ring-surface animate-pop">
                   {badge > 9 ? "9+" : badge}
                 </span>
               )}

@@ -5,7 +5,7 @@ import { db } from "@/server/db";
 import { ScheduleForm } from "./schedule-form";
 import { StatusBadge } from "@/components/orders/status-badge";
 import { WEEKDAYS } from "@/lib/constants";
-import { money, time } from "@/lib/format";
+import { dayKeyTz, isoWeekdayTz, money, startOfDayTz, time, tzParts } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Ish jadvali", robots: { index: false } };
@@ -13,8 +13,7 @@ export const metadata: Metadata = { title: "Ish jadvali", robots: { index: false
 export default async function SchedulePage() {
   const user = await requirePageUser("/usta/jadval", ["MASTER"]);
   const masterId = user.master!.id;
-  const start = new Date();
-  start.setHours(0, 0, 0, 0);
+  const start = startOfDayTz();
   const end = new Date(start.getTime() + 14 * 86_400_000);
   const [m, orders] = await Promise.all([
     db.masterProfile.findUniqueOrThrow({ where: { id: masterId }, select: { workDays: true, workStart: true, workEnd: true } }),
@@ -35,14 +34,14 @@ export default async function SchedulePage() {
         <h2 className="section-title mb-3">Keyingi 14 kun</h2>
         <div className="space-y-2.5">
           {days.map((d) => {
-            const wd = d.getDay() === 0 ? 7 : d.getDay();
+            const wd = isoWeekdayTz(d);
             const working = workDays.includes(wd);
-            const dayOrders = orders.filter((o) => o.scheduledAt.toDateString() === d.toDateString());
+            const dayOrders = orders.filter((o) => dayKeyTz(o.scheduledAt) === dayKeyTz(d));
             return (
               <div key={d.toISOString()} className={cn("card flex gap-4 p-4", !working && "opacity-60")}>
                 <div className={cn("flex w-14 shrink-0 flex-col items-center justify-center rounded-2xl py-2", dayOrders.length ? "bg-brand-500 text-white" : "bg-cream")}>
                   <span className="text-xs font-semibold">{WEEKDAYS[wd - 1].short}</span>
-                  <span className="text-xl font-extrabold">{d.getDate()}</span>
+                  <span className="text-xl font-extrabold">{tzParts(d).day}</span>
                 </div>
                 <div className="min-w-0 flex-1 space-y-1.5">
                   {!working && <p className="pt-3 text-sm text-muted">Dam olish kuni</p>}

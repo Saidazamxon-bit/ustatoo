@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/providers/toast";
 import { SessionProvider, type SessionUser } from "@/components/providers/session";
 import { PwaProvider } from "@/components/pwa/pwa-provider";
 import { PwaUi } from "@/components/pwa/pwa-ui";
+import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/providers/theme";
 import { getCurrentUser } from "@/server/auth";
 import { db } from "@/server/db";
 import { unreadMessagesCount } from "@/server/services/chat";
@@ -61,7 +62,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FAF6F1",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FAF6F1" },
+    { media: "(prefers-color-scheme: dark)", color: "#14110F" },
+  ],
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -90,8 +94,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     : null;
 
   return (
-    <html lang="uz" className={urbanist.variable}>
+    <html lang="uz" className={urbanist.variable} data-theme="light" suppressHydrationWarning>
+      <head>
+        {/* Mavzu sahifa chizilishidan oldin qo‘llanadi (oq miltillashsiz) */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="min-h-dvh font-sans">
+        <ThemeProvider>
         <ToastProvider>
           <SessionProvider user={sessionUser} initialCounts={counts}>
             <PwaProvider>
@@ -100,6 +109,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </PwaProvider>
           </SessionProvider>
         </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

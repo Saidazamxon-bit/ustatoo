@@ -143,7 +143,7 @@ export function OrderActions({
               ? ["Bu vaqtda bandman", "Hududim emas", "Bu ishni bajarmayman"]
               : ["Rejalar o‘zgardi", "Boshqa usta topdim", "Muammo hal bo‘ldi", "Usta javob bermadi"]
             ).map((r) => (
-              <button key={r} type="button" onClick={() => setReason(r)} className={cn("rounded-full px-3.5 py-2 text-sm font-semibold", reason === r ? "bg-ink text-white" : "bg-white shadow-[var(--shadow-soft)]")}>
+              <button key={r} type="button" onClick={() => setReason(r)} className={cn("rounded-full px-3.5 py-2 text-sm font-semibold", reason === r ? "bg-ink text-cream" : "bg-surface shadow-[var(--shadow-soft)]")}>
                 {r}
               </button>
             ))}

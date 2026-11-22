@@ -11,11 +11,11 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand-500 text-white shadow-[var(--shadow-brand)] hover:bg-brand-600",
-  secondary: "bg-white text-ink shadow-[var(--shadow-soft)] hover:bg-brand-50",
-  ghost: "text-ink-2 hover:bg-black/5",
+  secondary: "bg-surface text-ink shadow-[var(--shadow-soft)] hover:bg-brand-50",
+  ghost: "text-ink-2 hover:bg-ink/5",
   danger: "bg-red-50 text-danger hover:bg-red-100",
   outline: "border border-brand-200 bg-brand-50/60 text-brand-700 hover:bg-brand-100",
-  dark: "bg-ink text-white hover:bg-ink-2",
+  dark: "bg-ink text-cream hover:bg-ink-2",
 };
 
 const sizes: Record<Size, string> = {
@@ -72,7 +72,7 @@ export function IconCircle({
       aria-label={label}
       title={label}
       className={cn(
-        "relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-ink shadow-[var(--shadow-soft)] transition hover:bg-brand-50 active:scale-95",
+        "relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface text-ink shadow-[var(--shadow-soft)] transition hover:bg-brand-50 active:scale-95",
         className,
       )}
       {...rest}

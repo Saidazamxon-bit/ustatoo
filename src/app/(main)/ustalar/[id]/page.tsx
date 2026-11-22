@@ -17,7 +17,7 @@ import { FavoriteButton } from "@/components/masters/favorite-button";
 import { ButtonLink } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/states";
 import { WEEKDAYS } from "@/lib/constants";
-import { dateLong, experienceLabel, money, phone as fmtPhone, timeAgo } from "@/lib/format";
+import { dateLong, experienceLabel, money, phone as fmtPhone, timeAgo, tzParts } from "@/lib/format";
 import { siteUrl } from "@/lib/utils";
 import { truncate } from "@/lib/text";
 
@@ -46,9 +46,10 @@ function workDaysLabel(days: string) {
 }
 
 function isOpenNow(m: { workDays: string; workStart: string; workEnd: string }) {
-  const now = new Date();
-  const day = now.getDay() === 0 ? 7 : now.getDay();
-  const hm = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  // Ish vaqti Toshkent vaqti bo‘yicha tekshiriladi (server UTC da ishlaydi)
+  const now = tzParts(new Date());
+  const day = now.weekday === 0 ? 7 : now.weekday;
+  const hm = `${String(now.hours).padStart(2, "0")}:${String(now.minutes).padStart(2, "0")}`;
   return m.workDays.split(",").map(Number).includes(day) && hm >= m.workStart && hm < m.workEnd;
 }
 
@@ -102,11 +103,11 @@ export default async function MasterProfilePage({ params, searchParams }: Props)
       <section className="relative -mx-4 overflow-hidden sm:-mx-6 lg:mx-0 lg:mt-6 lg:rounded-[2rem]">
         <div className="relative h-[52dvh] max-h-[480px] min-h-[340px] bg-gradient-to-b from-brand-200 to-brand-100 lg:h-[420px]">
           <SmartImage src={cover} alt={`${m.user.name} — ${m.specialty}`} sizes="(max-width:1024px) 100vw, 1200px" priority />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f9d3b4]/50 via-transparent to-black/45" />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-200/50 via-transparent to-black/45" />
         </div>
         <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6">
           <BackButton />
-          <span className="rounded-full bg-white/80 px-4 py-2 text-[15px] font-bold backdrop-blur lg:hidden">Usta profili</span>
+          <span className="rounded-full bg-surface/80 px-4 py-2 text-[15px] font-bold backdrop-blur lg:hidden">Usta profili</span>
           <ShareButton title={`${m.user.name} — UstaTop`} />
         </div>
         <div className="absolute inset-x-0 bottom-10 grid grid-cols-3 gap-2.5 px-4 sm:px-6 lg:bottom-6 lg:left-auto lg:w-[460px]">

@@ -28,21 +28,56 @@ function toDate(d: Date | string): Date {
   return typeof d === "string" ? new Date(d) : d;
 }
 
+/**
+ * Barcha sana/vaqtlar O‘zbekiston vaqtida (Asia/Tashkent, UTC+5, yozgi vaqt yo‘q) ko‘rsatiladi.
+ * Server (UTC) va brauzer bir xil natija beradi — hydration xatosi bo‘lmaydi va
+ * foydalanuvchi qaysi qurilmada bo‘lmasin, vaqt to‘g‘ri chiqadi.
+ */
+export const TZ_OFFSET_MIN = 300;
+
+export function tzParts(d: Date | string) {
+  const x = new Date(toDate(d).getTime() + TZ_OFFSET_MIN * 60_000);
+  return { year: x.getUTCFullYear(), month: x.getUTCMonth(), day: x.getUTCDate(), hours: x.getUTCHours(), minutes: x.getUTCMinutes(), weekday: x.getUTCDay() };
+}
+
+/** Toshkent vaqti bo‘yicha kun boshlanishi */
+export function startOfDayTz(d: Date | string = new Date()): Date {
+  const p = tzParts(d);
+  return new Date(Date.UTC(p.year, p.month, p.day) - TZ_OFFSET_MIN * 60_000);
+}
+
+/** Toshkent vaqti bo‘yicha oy boshlanishi (offset — necha oy oldin/keyin) */
+export function startOfMonthTz(d: Date | string = new Date(), offset = 0): Date {
+  const p = tzParts(d);
+  return new Date(Date.UTC(p.year, p.month + offset, 1) - TZ_OFFSET_MIN * 60_000);
+}
+
+export function dayKeyTz(d: Date | string): string {
+  const p = tzParts(d);
+  return `${p.year}-${p.month}-${p.day}`;
+}
+
+/** 1 = Dushanba ... 7 = Yakshanba */
+export function isoWeekdayTz(d: Date | string): number {
+  const w = tzParts(d).weekday;
+  return w === 0 ? 7 : w;
+}
+
 /** "12 noyabr 2026" */
 export function dateLong(d: Date | string): string {
-  const x = toDate(d);
-  return `${x.getDate()} ${MONTHS[x.getMonth()]} ${x.getFullYear()}`;
+  const x = tzParts(d);
+  return `${x.day} ${MONTHS[x.month]} ${x.year}`;
 }
 
 /** "12 noy" */
 export function dateShort(d: Date | string): string {
-  const x = toDate(d);
-  return `${x.getDate()} ${MONTHS_SHORT[x.getMonth()]}`;
+  const x = tzParts(d);
+  return `${x.day} ${MONTHS_SHORT[x.month]}`;
 }
 
 export function time(d: Date | string): string {
-  const x = toDate(d);
-  return `${String(x.getHours()).padStart(2, "0")}:${String(x.getMinutes()).padStart(2, "0")}`;
+  const x = tzParts(d);
+  return `${String(x.hours).padStart(2, "0")}:${String(x.minutes).padStart(2, "0")}`;
 }
 
 export function dateTime(d: Date | string): string {
@@ -50,7 +85,7 @@ export function dateTime(d: Date | string): string {
 }
 
 export function weekdayShort(d: Date | string): string {
-  return WEEKDAYS_SHORT[toDate(d).getDay()];
+  return WEEKDAYS_SHORT[tzParts(d).weekday];
 }
 
 /** "hozirgina", "5 daqiqa oldin", "kecha" ... */

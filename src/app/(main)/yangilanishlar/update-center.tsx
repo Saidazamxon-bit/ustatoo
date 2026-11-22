@@ -49,7 +49,7 @@ export function UpdateCenter() {
   return (
     <div className="space-y-6">
       {/* Joriy holat */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-white p-6 shadow-[var(--shadow-soft)]">
+      <section className="relative overflow-hidden rounded-[2rem] bg-surface p-6 shadow-[var(--shadow-soft)]">
         <div className="pointer-events-none absolute -right-14 -top-16 h-48 w-48 rounded-full bg-brand-100 blur-2xl" aria-hidden />
         <div className="relative flex items-start gap-4">
           <span className={cn("flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl", available ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-green-50 text-success")}>

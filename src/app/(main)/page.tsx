@@ -13,6 +13,7 @@ import { MasterCard, MasterPill, MasterRow } from "@/components/masters/master-c
 import { ServiceCard } from "@/components/masters/service-card";
 import { ButtonLink } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/states";
+import { ThemeToggleButton } from "@/components/providers/theme";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +30,7 @@ export default async function HomePage() {
     <div className="space-y-8 pt-[max(1rem,env(safe-area-inset-top))] lg:space-y-12 lg:pt-8">
       {/* Mobil yuqori qism: logotip, salomlashuv, avatar, bildirishnomalar */}
       <div className="flex items-center justify-between lg:hidden animate-fade-in">
-        <Link href={user ? "/profil" : "/kirish"} className="flex items-center gap-2.5 rounded-full bg-white py-1.5 pl-1.5 pr-1.5 shadow-[var(--shadow-soft)]">
+        <Link href={user ? "/profil" : "/kirish"} className="flex items-center gap-2.5 rounded-full bg-surface py-1.5 pl-1.5 pr-1.5 shadow-[var(--shadow-soft)]">
           <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-50">
             <LogoMark size={30} />
           </span>
@@ -39,10 +40,12 @@ export default async function HomePage() {
           </span>
           {user ? <Avatar src={user.avatar} name={user.name} size={44} /> : <span className="rounded-full bg-brand-500 px-3.5 py-2.5 text-xs font-bold text-white">Kirish</span>}
         </Link>
+        <div className="flex items-center gap-2.5">
+        <ThemeToggleButton className="h-12 w-12" />
         <Link
           href={user ? "/profil/bildirishnomalar" : "/kirish?next=/profil/bildirishnomalar"}
           aria-label="Bildirishnomalar"
-          className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-[var(--shadow-soft)]"
+          className="relative flex h-12 w-12 items-center justify-center rounded-full bg-surface shadow-[var(--shadow-soft)]"
         >
           <Bell className="h-5 w-5" />
           {unread > 0 && (
@@ -51,6 +54,7 @@ export default async function HomePage() {
             </span>
           )}
         </Link>
+        </div>
       </div>
 
       {/* Sarlavha va qidiruv */}
@@ -153,7 +157,7 @@ export default async function HomePage() {
 
       {/* Usta bo‘lish banneri */}
       {user?.role !== "MASTER" && (
-        <section className="relative overflow-hidden rounded-[2rem] bg-ink p-6 text-white sm:p-10">
+        <section className="relative overflow-hidden rounded-[2rem] bg-night p-6 text-white sm:p-10">
           <div className="absolute -right-10 -top-16 h-56 w-56 rounded-full bg-brand-500/40 blur-3xl" />
           <div className="relative max-w-lg space-y-3">
             <p className="text-sm font-semibold uppercase tracking-wider text-brand-300">Ustalar uchun</p>

@@ -71,7 +71,7 @@ export function ImageUploader({
         </div>
       ))}
       {Array.from({ length: uploading }).map((_, i) => (
-        <div key={`u${i}`} className={cn("flex h-24 w-24 items-center justify-center rounded-2xl bg-white", tileClassName)}>
+        <div key={`u${i}`} className={cn("flex h-24 w-24 items-center justify-center rounded-2xl bg-surface", tileClassName)}>
           <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
         </div>
       ))}

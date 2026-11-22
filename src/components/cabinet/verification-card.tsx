@@ -26,7 +26,7 @@ export function VerificationCard({ status, note }: { status: string; note?: stri
       </div>
     );
   return (
-    <div className="rounded-[1.5rem] bg-ink p-5 text-white">
+    <div className="rounded-[1.5rem] bg-night p-5 text-white">
       <div className="flex items-start gap-3">
         <ShieldAlert className="h-6 w-6 shrink-0 text-brand-400" />
         <div className="flex-1">

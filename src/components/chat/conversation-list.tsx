@@ -69,17 +69,17 @@ export function ConversationList({ initial, compact }: { initial: Item[]; compac
               href={`/xabarlar/${c.id}`}
               className={cn(
                 "flex items-center gap-3 rounded-[1.4rem] p-3 transition",
-                active ? "bg-brand-50 ring-1 ring-brand-200" : "bg-white shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-lift)]",
+                active ? "bg-brand-50 ring-1 ring-brand-200" : "bg-surface shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-lift)]",
               )}
             >
               <span className="relative">
                 <Avatar src={c.other.avatar} name={c.other.name} size={52} />
-                {online && <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white" />}
+                {online && <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full bg-green-500 ring-2 ring-surface" />}
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center justify-between gap-2">
                   <span className="truncate font-bold">{c.other.name}</span>
-                  {c.lastMessage && <span className="shrink-0 text-xs text-muted">{timeAgo(c.lastMessage.createdAt)}</span>}
+                  {c.lastMessage && <span suppressHydrationWarning className="shrink-0 text-xs text-muted">{timeAgo(c.lastMessage.createdAt)}</span>}
                 </span>
                 {c.order && (
                   <span className="block truncate text-[11px] font-semibold text-brand-600">

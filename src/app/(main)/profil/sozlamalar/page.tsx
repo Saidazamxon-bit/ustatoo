@@ -6,6 +6,7 @@ import { LogoutButton } from "@/components/forms/logout-button";
 import { SettingsForm } from "./settings-form";
 import Link from "next/link";
 import { APP_VERSION } from "@/lib/version";
+import { ThemeSelector } from "@/components/providers/theme";
 
 export const metadata: Metadata = { title: "Sozlamalar", robots: { index: false } };
 
@@ -15,6 +16,13 @@ export default async function SettingsPage() {
   return (
     <div className="mx-auto max-w-xl">
       <PageHeader title="Sozlamalar" backHref="/profil" />
+      <section className="card mb-5 space-y-3 p-5">
+        <div>
+          <p className="font-bold">Ko‘rinish</p>
+          <p className="text-sm text-muted">“Tizim” — qurilmangiz sozlamasiga qarab avtomatik almashadi</p>
+        </div>
+        <ThemeSelector />
+      </section>
       <SettingsForm initial={{ notifyOrders: user.notifyOrders, notifyMessages: user.notifyMessages, notifyPromos: user.notifyPromos }} />
       <div className="card mt-5 flex items-center justify-between gap-3 p-5 text-sm">
         <div>

@@ -9,6 +9,7 @@ import { NAV_ITEMS } from "./bottom-nav";
 import { useSession } from "@/components/providers/session";
 import { Avatar } from "@/components/ui/misc";
 import { ButtonLink } from "@/components/ui/button";
+import { ThemeToggleButton } from "@/components/providers/theme";
 
 /** Kompyuter va planshet uchun yuqori navigatsiya paneli */
 export function TopHeader() {
@@ -17,7 +18,7 @@ export function TopHeader() {
 
   return (
     <header className="sticky top-0 z-40 hidden border-b border-line/70 bg-cream/85 backdrop-blur-lg lg:block">
-      <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-6 px-8">
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-4 px-8 xl:gap-6">
         <Logo />
         <nav className="flex items-center gap-1" aria-label="Asosiy navigatsiya">
           {NAV_ITEMS.map(({ href, label, match }) => {
@@ -28,20 +29,24 @@ export function TopHeader() {
                 key={href}
                 href={href}
                 className={cn(
-                  "relative rounded-full px-4 py-2 text-[15px] font-semibold transition",
-                  active ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "text-ink-2 hover:bg-white",
+                  "relative whitespace-nowrap rounded-full px-4 py-2 text-[15px] font-semibold transition",
+                  active ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "text-ink-2 hover:bg-surface",
                 )}
               >
                 {label}
-                {badge > 0 && <span className="ml-1.5 rounded-full bg-ink px-1.5 py-0.5 text-[11px] text-white">{badge}</span>}
+                {badge > 0 && <span className="ml-1.5 rounded-full bg-ink px-1.5 py-0.5 text-[11px] text-cream">{badge}</span>}
               </Link>
             );
           })}
         </nav>
         <div className="ml-auto flex items-center gap-3">
-          <Link href="/qidiruv" className="flex h-11 w-56 items-center gap-2 rounded-full bg-white px-4 text-sm text-muted shadow-[var(--shadow-soft)] transition hover:text-ink xl:w-72">
-            <Search className="h-4 w-4" /> Usta yoki xizmat qidirish…
+          <Link href="/qidiruv" className="hidden h-11 w-64 items-center gap-2 whitespace-nowrap rounded-full bg-surface px-4 text-sm text-muted shadow-[var(--shadow-soft)] transition hover:text-ink xl:flex">
+            <Search className="h-4 w-4 shrink-0" /> Usta yoki xizmat qidirish…
           </Link>
+          <Link href="/qidiruv" aria-label="Qidiruv" className="flex h-11 w-11 items-center justify-center rounded-full bg-surface shadow-[var(--shadow-soft)] transition hover:bg-brand-50 xl:hidden">
+            <Search className="h-5 w-5" />
+          </Link>
+          <ThemeToggleButton />
           {user ? (
             <>
               {user.role === "ADMIN" && (
@@ -54,9 +59,9 @@ export function TopHeader() {
                   Usta paneli
                 </ButtonLink>
               )}
-              <Link href="/profil/bildirishnomalar" aria-label="Bildirishnomalar" className="relative flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-[var(--shadow-soft)]">
+              <Link href="/profil/bildirishnomalar" aria-label="Bildirishnomalar" className="relative flex h-11 w-11 items-center justify-center rounded-full bg-surface shadow-[var(--shadow-soft)]">
                 <Bell className="h-5 w-5" />
-                {unreadNotifications > 0 && <span className="absolute right-2.5 top-2.5 h-2.5 w-2.5 rounded-full bg-brand-500 ring-2 ring-white" />}
+                {unreadNotifications > 0 && <span className="absolute right-2.5 top-2.5 h-2.5 w-2.5 rounded-full bg-brand-500 ring-2 ring-surface" />}
               </Link>
               <Link href="/profil" aria-label="Profil">
                 <Avatar src={user.avatar} name={user.name} size={44} ring />

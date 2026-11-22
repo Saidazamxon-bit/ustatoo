@@ -55,7 +55,7 @@ export function InstallButton({
             <MonitorSmartphone className="h-5 w-5 shrink-0 text-brand-500" />
             Brauzeringiz avtomatik o‘rnatish oynasini taqdim etmadi. Quyidagi usul bilan o‘rnating:
           </p>
-          <ul className="space-y-2 rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)]">
+          <ul className="space-y-2 rounded-2xl bg-surface p-4 shadow-[var(--shadow-soft)]">
             <li><b>Android (Chrome):</b> ⋮ menyu → “Ilovani o‘rnatish” yoki “Bosh ekranga qo‘shish”.</li>
             <li><b>Samsung Internet:</b> ☰ menyu → “Sahifani qo‘shish” → “Bosh ekran”.</li>
             <li><b>Kompyuter (Chrome / Edge):</b> manzil satridagi o‘rnatish belgisi (⊕) ni bosing.</li>

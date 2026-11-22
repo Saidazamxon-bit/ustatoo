@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { BarChart3, BadgeCheck, Flag, FolderTree, Home, MessageSquareText, Settings, ShoppingBag, Users, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/layout/logo";
+import { ThemeToggleButton } from "@/components/providers/theme";
 
 const ITEMS = [
   { href: "/admin", label: "Statistika", icon: BarChart3 },
@@ -21,9 +22,10 @@ const ITEMS = [
 export function AdminNav({ badges }: { badges: { pending: number; complaints: number } }) {
   const pathname = usePathname();
   return (
-    <aside className="lg:sticky lg:top-0 lg:h-dvh lg:overflow-y-auto lg:border-r lg:border-line lg:bg-white lg:p-5">
+    <aside className="lg:sticky lg:top-0 lg:h-dvh lg:overflow-y-auto lg:border-r lg:border-line lg:bg-surface lg:p-5">
       <div className="hidden items-center justify-between lg:flex">
         <Logo />
+        <ThemeToggleButton className="h-10 w-10" />
       </div>
       <p className="mb-2 mt-6 hidden px-3 text-xs font-bold uppercase tracking-wider text-muted lg:block">Administrator</p>
       <nav className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-3 lg:flex-col lg:gap-1 lg:p-0" aria-label="Admin navigatsiya">
@@ -37,7 +39,7 @@ export function AdminNav({ badges }: { badges: { pending: number; complaints: nu
               href={item.href}
               className={cn(
                 "flex shrink-0 items-center gap-2.5 rounded-full px-4 py-2.5 text-sm font-semibold transition lg:rounded-2xl",
-                active ? "bg-ink text-white" : "bg-white text-ink-2 shadow-[var(--shadow-soft)] hover:bg-cream lg:shadow-none",
+                active ? "bg-ink text-cream" : "bg-surface text-ink-2 shadow-[var(--shadow-soft)] hover:bg-cream lg:shadow-none",
               )}
             >
               <Icon className="h-4 w-4" />

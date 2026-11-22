@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 
 const control =
-  "w-full rounded-2xl border border-line bg-white px-4 text-[15px] text-ink placeholder:text-muted/80 transition focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 disabled:bg-cream-2";
+  "w-full rounded-2xl border border-line bg-surface px-4 text-[15px] text-ink placeholder:text-muted/80 transition focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 disabled:bg-cream-2";
 
 export function Field({
   label,
@@ -144,7 +144,7 @@ export function Toggle({
         onClick={() => onChange(!checked)}
         className={cn("relative h-7 w-12 shrink-0 rounded-full transition-colors", checked ? "bg-brand-500" : "bg-line")}
       >
-        <span className={cn("absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all", checked ? "left-6" : "left-1")} />
+        <span className={cn("absolute top-1 h-5 w-5 rounded-full bg-surface shadow transition-all", checked ? "left-6" : "left-1")} />
       </button>
     </label>
   );

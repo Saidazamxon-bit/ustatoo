@@ -4,6 +4,7 @@ import {
   Bell, ChevronRight, Heart, History, MessageCircle, Settings, ShoppingBag, UserRound, LayoutDashboard, Wrench, Images, CalendarClock, Wallet, Star, ShieldCheck, Pencil, Smartphone, RefreshCw,
 } from "lucide-react";
 import { APP_VERSION } from "@/lib/version";
+import { ThemeSelector } from "@/components/providers/theme";
 import { requirePageUser } from "@/server/auth";
 import { db } from "@/server/db";
 import { unreadMessagesCount } from "@/server/services/chat";
@@ -54,7 +55,7 @@ export default async function ProfilePage() {
               {user.master && <Badge tone={user.master.verification === "APPROVED" ? "success" : "neutral"}>{VERIFICATION_LABELS[user.master.verification]}</Badge>}
             </div>
           </div>
-          <Link href="/profil/tahrirlash" aria-label="Tahrirlash" className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-[var(--shadow-soft)]">
+          <Link href="/profil/tahrirlash" aria-label="Tahrirlash" className="flex h-11 w-11 items-center justify-center rounded-full bg-surface shadow-[var(--shadow-soft)]">
             <Pencil className="h-4 w-4" />
           </Link>
         </div>
@@ -73,7 +74,7 @@ export default async function ProfilePage() {
       </section>
 
       {user.role === "ADMIN" && (
-        <Link href="/admin" className="mb-5 flex items-center gap-3 rounded-[1.5rem] bg-ink p-4 text-white">
+        <Link href="/admin" className="mb-5 flex items-center gap-3 rounded-[1.5rem] bg-night p-4 text-white">
           <ShieldCheck className="h-6 w-6 text-brand-400" />
           <span className="flex-1 font-bold">Administrator paneli</span>
           <ChevronRight className="h-5 w-5" />
@@ -106,6 +107,11 @@ export default async function ProfilePage() {
         <MenuItem href="/profil/bildirishnomalar" icon={Bell} label="Bildirishnomalar" badge={unreadNotif} />
         <MenuItem href="/profil/sozlamalar" icon={Settings} label="Sozlamalar" />
       </nav>
+
+      <h2 className="mb-2 px-1 text-sm font-bold uppercase tracking-wider text-muted">Ko‘rinish</h2>
+      <section className="card mb-5 p-3">
+        <ThemeSelector />
+      </section>
 
       <h2 className="mb-2 px-1 text-sm font-bold uppercase tracking-wider text-muted">Ilova</h2>
       <nav className="card mb-5 divide-y divide-line overflow-hidden">

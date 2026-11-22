@@ -43,7 +43,7 @@ export default function AppPage() {
         <div className="pointer-events-none absolute -left-24 -top-24 -z-10 h-72 w-72 rounded-full bg-brand-200/50 blur-3xl" aria-hidden />
         <div className="space-y-6 text-center lg:text-left">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-brand-700 shadow-[var(--shadow-soft)]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-xs font-bold text-brand-700 shadow-[var(--shadow-soft)]">
               <Smartphone className="h-3.5 w-3.5" /> Android · iPhone · iPad · Kompyuter
             </span>
           </Reveal>
@@ -117,7 +117,7 @@ export default function AppPage() {
       {/* Afzalliklar */}
       <section>
         <Reveal>
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-ink px-6 py-12 text-white sm:px-12">
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-night px-6 py-12 text-white sm:px-12">
             <div className="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-brand-500/40 blur-3xl animate-glow" aria-hidden />
             <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-amber-400/20 blur-3xl" aria-hidden />
             <div className="relative mb-10 max-w-xl">

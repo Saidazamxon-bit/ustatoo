@@ -117,7 +117,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
           {role === "client" && <Rating value={order.master.rating} count={order.master.reviewCount} className="text-xs" />}
         </div>
         {status !== "CANCELLED" && other.phone && (
-          <a href={`tel:${other.phone}`} aria-label={`Qo‘ng‘iroq: ${fmtPhone(other.phone)}`} className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-[var(--shadow-soft)] ring-1 ring-line">
+          <a href={`tel:${other.phone}`} aria-label={`Qo‘ng‘iroq: ${fmtPhone(other.phone)}`} className="flex h-12 w-12 items-center justify-center rounded-full bg-surface shadow-[var(--shadow-soft)] ring-1 ring-line">
             <Phone className="h-5 w-5" />
           </a>
         )}

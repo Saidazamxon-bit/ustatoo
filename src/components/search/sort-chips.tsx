@@ -48,7 +48,7 @@ export function SortChips({ basePath }: { basePath?: string }) {
           aria-pressed={current === o.value}
           className={cn(
             "chip shrink-0",
-            current === o.value ? "bg-ink text-white shadow-none" : "hover:text-brand-600",
+            current === o.value ? "bg-ink text-cream shadow-none" : "hover:text-brand-600",
           )}
         >
           {o.value === "near" && <Navigation className="h-3.5 w-3.5" />}

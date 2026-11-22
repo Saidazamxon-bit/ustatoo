@@ -40,7 +40,7 @@ function InstallBanner() {
   };
   return (
     <div role="dialog" aria-label="Ilovani o‘rnatish taklifi" className={cn(floating, "animate-slide-up")}>
-      <div className="relative overflow-hidden rounded-[1.75rem] bg-white p-4 shadow-[var(--shadow-lift)] ring-1 ring-black/[0.04]">
+      <div className="relative overflow-hidden rounded-[1.75rem] bg-surface p-4 shadow-[var(--shadow-lift)] ring-1 ring-black/[0.04]">
         <div className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full bg-brand-200/60 blur-2xl" />
         <button onClick={later} aria-label="Yopish" className="absolute right-3 top-3 rounded-full p-1.5 text-muted hover:bg-cream">
           <X className="h-4 w-4" />
@@ -48,7 +48,7 @@ function InstallBanner() {
         <div className="relative flex gap-3.5 pr-6">
           <span className="relative h-[52px] w-[52px] shrink-0">
             <LogoMark size={52} className="drop-shadow-[0_8px_16px_rgba(244,119,33,0.35)]" />
-            <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-ink text-white ring-2 ring-white">
+            <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-ink text-cream ring-2 ring-surface">
               <Download className="h-3 w-3" />
             </span>
           </span>
@@ -101,7 +101,7 @@ function UpdatePrompt() {
   };
   return (
     <div role="alertdialog" aria-labelledby="ut-update-title" className={cn(floating, "z-[75] animate-slide-up")}>
-      <div className="relative overflow-hidden rounded-[1.75rem] bg-ink p-4 text-white shadow-[var(--shadow-lift)]">
+      <div className="relative overflow-hidden rounded-[1.75rem] bg-night p-4 text-white shadow-[var(--shadow-lift)]">
         <div className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full bg-brand-500/40 blur-2xl" />
         <div className="relative flex gap-3.5">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-500 shadow-[var(--shadow-brand)]">
@@ -161,7 +161,7 @@ function NetworkStatus() {
       <div
         className={cn(
           "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-[var(--shadow-lift)] animate-fade-up",
-          online ? "bg-green-600 text-white" : "bg-ink text-white",
+          online ? "bg-green-600 text-white" : "bg-ink text-cream",
         )}
       >
         {online ? <Wifi className="h-4 w-4" /> : <WifiOff className="h-4 w-4 text-brand-300" />}

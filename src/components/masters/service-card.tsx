@@ -14,7 +14,7 @@ export function ServiceCard({ s }: { s: ServiceCardData }) {
     >
       <div className="relative aspect-[16/10] overflow-hidden">
         <SmartImage src={s.image ?? s.category.image} alt={s.title} sizes="280px" className="transition duration-500 group-hover:scale-105" />
-        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold text-ink backdrop-blur">{s.category.name}</span>
+        <span className="absolute left-3 top-3 rounded-full bg-surface/90 px-2.5 py-1 text-[11px] font-bold text-ink backdrop-blur">{s.category.name}</span>
       </div>
       <div className="flex flex-1 flex-col p-4">
         <h3 className="line-clamp-1 text-[15.5px] font-bold">{s.title}</h3>

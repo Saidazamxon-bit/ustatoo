@@ -70,7 +70,7 @@ export function PortfolioManager({ initial }: { initial: P[] }) {
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent p-3 pt-10 text-white">
                 <p className="truncate text-sm font-bold">{p.title}</p>
               </div>
-              <button onClick={() => remove(p.id)} aria-label="O‘chirish" className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-danger shadow">
+              <button onClick={() => remove(p.id)} aria-label="O‘chirish" className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full bg-surface/90 text-danger shadow">
                 <Trash2 className="h-4 w-4" />
               </button>
             </div>

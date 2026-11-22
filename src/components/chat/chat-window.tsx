@@ -119,15 +119,15 @@ export function ChatWindow({
   let lastDay = "";
 
   return (
-    <div className="fixed inset-0 z-30 flex flex-col bg-cream lg:static lg:z-auto lg:h-[calc(100dvh-72px-2rem)] lg:rounded-[2rem] lg:bg-white/60 lg:shadow-[var(--shadow-soft)]">
-      <header className="flex items-center gap-3 border-b border-line/70 bg-cream/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur lg:rounded-t-[2rem] lg:bg-white/80 lg:pt-3">
+    <div className="fixed inset-0 z-30 flex flex-col bg-cream lg:static lg:z-auto lg:h-[calc(100dvh-72px-2rem)] lg:rounded-[2rem] lg:bg-surface/60 lg:shadow-[var(--shadow-soft)]">
+      <header className="flex items-center gap-3 border-b border-line/70 bg-cream/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur lg:rounded-t-[2rem] lg:bg-surface/80 lg:pt-3">
         <IconCircle label="Orqaga" onClick={() => router.push("/xabarlar")} className="lg:hidden">
           <ChevronLeft className="h-5 w-5" />
         </IconCircle>
         <Link href={other.masterId ? `/ustalar/${other.masterId}` : "#"} className="flex min-w-0 flex-1 items-center gap-3">
           <span className="relative">
             <Avatar src={other.avatar} name={other.name} size={44} />
-            {online && <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white" />}
+            {online && <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 ring-2 ring-surface" />}
           </span>
           <span className="min-w-0">
             <span className="block truncate font-bold">{other.name}</span>
@@ -135,14 +135,14 @@ export function ChatWindow({
           </span>
         </Link>
         {other.phone && (
-          <a href={`tel:${other.phone}`} aria-label="Qo‘ng‘iroq qilish" className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-[var(--shadow-soft)]">
+          <a href={`tel:${other.phone}`} aria-label="Qo‘ng‘iroq qilish" className="flex h-11 w-11 items-center justify-center rounded-full bg-surface shadow-[var(--shadow-soft)]">
             <Phone className="h-5 w-5" />
           </a>
         )}
       </header>
 
       {order && (
-        <Link href={`/buyurtmalar/${order.id}`} className="mx-4 mt-3 flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2.5 text-sm shadow-[var(--shadow-soft)]">
+        <Link href={`/buyurtmalar/${order.id}`} className="mx-4 mt-3 flex items-center gap-2 rounded-2xl bg-surface px-3.5 py-2.5 text-sm shadow-[var(--shadow-soft)]">
           <ShoppingBag className="h-4 w-4 text-brand-500" />
           <span className="font-semibold">Buyurtma {order.code}</span>
           <span className="ml-auto rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-bold text-brand-700">{ORDER_STATUS_LABELS[order.status as OrderStatus]}</span>
@@ -151,7 +151,7 @@ export function ChatWindow({
 
       <div ref={listRef} className="flex-1 space-y-1.5 overflow-y-auto px-4 py-4" aria-live="polite">
         {hasMore && (
-          <button onClick={loadOlder} className="mx-auto mb-2 block rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-muted shadow-sm">
+          <button onClick={loadOlder} className="mx-auto mb-2 block rounded-full bg-surface px-4 py-1.5 text-xs font-semibold text-muted shadow-sm">
             Oldingi xabarlar
           </button>
         )}
@@ -168,7 +168,7 @@ export function ChatWindow({
                 <div
                   className={cn(
                     "max-w-[80%] overflow-hidden rounded-[1.25rem] text-[15px] leading-snug shadow-sm",
-                    mine ? "rounded-br-md bg-brand-500 text-white" : "rounded-bl-md bg-white text-ink",
+                    mine ? "rounded-br-md bg-brand-500 text-white" : "rounded-bl-md bg-surface text-ink",
                     m.pending && "opacity-70",
                   )}
                 >
@@ -190,13 +190,13 @@ export function ChatWindow({
         })}
       </div>
 
-      <form onSubmit={submit} className="flex items-end gap-2 border-t border-line/70 bg-cream/95 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:rounded-b-[2rem] lg:bg-white/80">
+      <form onSubmit={submit} className="flex items-end gap-2 border-t border-line/70 bg-cream/95 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:rounded-b-[2rem] lg:bg-surface/80">
         <button
           type="button"
           aria-label="Rasm yuborish"
           disabled={uploading}
           onClick={() => fileRef.current?.click()}
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-ink-2 shadow-[var(--shadow-soft)] transition hover:text-brand-600"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface text-ink-2 shadow-[var(--shadow-soft)] transition hover:text-brand-600"
         >
           {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImagePlus className="h-5 w-5" />}
         </button>
@@ -214,7 +214,7 @@ export function ChatWindow({
           maxLength={2000}
           placeholder="Xabar yozing…"
           aria-label="Xabar"
-          className="max-h-32 min-h-12 flex-1 resize-none rounded-3xl bg-white px-4 py-3 text-[15px] shadow-[var(--shadow-soft)] outline-none focus:ring-4 focus:ring-brand-100"
+          className="max-h-32 min-h-12 flex-1 resize-none rounded-3xl bg-surface px-4 py-3 text-[15px] shadow-[var(--shadow-soft)] outline-none focus:ring-4 focus:ring-brand-100"
         />
         <button
           type="submit"

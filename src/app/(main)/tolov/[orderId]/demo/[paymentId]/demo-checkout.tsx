@@ -94,7 +94,7 @@ export function DemoCheckout({ payment, order, phone }: { payment: { id: string;
       <div className="mb-4 flex justify-center">
         <Badge tone="warn">DEMO — haqiqiy pul yechilmaydi</Badge>
       </div>
-      <div className="overflow-hidden rounded-[2rem] bg-white shadow-[var(--shadow-lift)]">
+      <div className="overflow-hidden rounded-[2rem] bg-surface shadow-[var(--shadow-lift)]">
         <div className={cn("bg-gradient-to-br p-6 text-white", BRAND[payment.provider] ?? "from-ink to-ink-2")}>
           <p className="text-2xl font-black tracking-wide">{label}</p>
           <p className="mt-4 text-sm text-white/80">UstaTop · {order.code}</p>

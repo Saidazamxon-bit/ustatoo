@@ -23,14 +23,14 @@ export function PortfolioGallery({ items }: { items: Item[] }) {
       <Modal open={cur !== null} onClose={() => setIdx(null)} title={cur?.title} className="sm:max-w-3xl">
         {cur && (
           <div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-night">
               <SmartImage src={cur.image} alt={cur.title} sizes="(max-width:768px) 100vw, 768px" className="object-contain" />
               {items.length > 1 && (
                 <>
-                  <button aria-label="Oldingi" onClick={() => setIdx((i) => ((i ?? 0) - 1 + items.length) % items.length)} className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90">
+                  <button aria-label="Oldingi" onClick={() => setIdx((i) => ((i ?? 0) - 1 + items.length) % items.length)} className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-surface/90">
                     <ChevronLeft className="h-5 w-5" />
                   </button>
-                  <button aria-label="Keyingi" onClick={() => setIdx((i) => ((i ?? 0) + 1) % items.length)} className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90">
+                  <button aria-label="Keyingi" onClick={() => setIdx((i) => ((i ?? 0) + 1) % items.length)} className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-surface/90">
                     <ChevronRight className="h-5 w-5" />
                   </button>
                 </>

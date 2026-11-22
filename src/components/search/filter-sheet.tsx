@@ -87,7 +87,7 @@ export function FilterSheet({ categories, open, onClose }: { categories: Cat[]; 
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {[50000, 100000, 300000, 1000000].map((v) => (
-              <button key={v} type="button" onClick={() => set("narxMax", String(v))} className={cn("rounded-full border px-3 py-1 text-xs font-semibold", f.narxMax === String(v) ? "border-brand-500 bg-brand-50 text-brand-700" : "border-line bg-white text-ink-2")}>
+              <button key={v} type="button" onClick={() => set("narxMax", String(v))} className={cn("rounded-full border px-3 py-1 text-xs font-semibold", f.narxMax === String(v) ? "border-brand-500 bg-brand-50 text-brand-700" : "border-line bg-surface text-ink-2")}>
                 {money(v)} gacha
               </button>
             ))}
@@ -115,7 +115,7 @@ function ChipGroup({ label, items, value, onChange }: { label: string; items: { 
             type="button"
             onClick={() => onChange(i.v)}
             aria-pressed={value === i.v}
-            className={cn("rounded-full px-4 py-2 text-sm font-semibold transition", value === i.v ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-white text-ink-2 shadow-[var(--shadow-soft)]")}
+            className={cn("rounded-full px-4 py-2 text-sm font-semibold transition", value === i.v ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-surface text-ink-2 shadow-[var(--shadow-soft)]")}
           >
             {i.l}
           </button>

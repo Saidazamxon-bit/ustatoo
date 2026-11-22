@@ -83,7 +83,7 @@ export function ServiceSelector({
       {!isSelf && (
         <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-[max(0.9rem,env(safe-area-inset-bottom))] lg:hidden">
           <div className="glass mx-auto flex max-w-xl items-center gap-3 rounded-full p-2 shadow-[var(--shadow-lift)] ring-1 ring-black/[0.03]">
-            <FavoriteButton masterId={masterId} initial={favorite} className="bg-white" />
+            <FavoriteButton masterId={masterId} initial={favorite} className="bg-surface" />
             <Button size="lg" className="h-12 flex-1" onClick={order} icon={<ShoppingBag className="h-5 w-5" />}>
               {selected.length ? `Buyurtma · ${money(total)}` : "Buyurtma berish"}
             </Button>
@@ -98,7 +98,7 @@ export function ServiceSelector({
 function DesktopOrderCta({ show, count, total, onOrder }: { show: boolean; count: number; total: number; onOrder: () => void }) {
   if (!show) return null;
   return (
-    <div className="mt-4 hidden items-center justify-between rounded-2xl bg-ink p-4 text-white lg:flex">
+    <div className="mt-4 hidden items-center justify-between rounded-2xl bg-night p-4 text-white lg:flex">
       <div>
         <p className="text-sm text-white/70">{count ? `${count} ta xizmat tanlandi` : "Xizmatni tanlang"}</p>
         <p className="text-xl font-bold">{count ? money(total) : "—"}</p>

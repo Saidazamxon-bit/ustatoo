@@ -59,7 +59,7 @@ export function RegisterForm({ categories, allowMaster }: { categories: { id: st
             onClick={() => setRole(v)}
             className={cn(
               "rounded-[1.25rem] p-4 text-left transition disabled:opacity-40",
-              role === v ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-white shadow-[var(--shadow-soft)]",
+              role === v ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-surface shadow-[var(--shadow-soft)]",
             )}
           >
             <Icon className="mb-2 h-6 w-6" />
@@ -78,7 +78,7 @@ export function RegisterForm({ categories, allowMaster }: { categories: { id: st
           <Select label="Tuman" value={f.district} onChange={set("district")} error={errors.district} placeholder="Tanlang" options={getDistricts(f.region).map((d) => ({ value: d.name, label: d.name }))} />
         </div>
         {role === "MASTER" && (
-          <div className="space-y-4 rounded-[1.5rem] bg-white p-4 shadow-[var(--shadow-soft)] animate-fade-up">
+          <div className="space-y-4 rounded-[1.5rem] bg-surface p-4 shadow-[var(--shadow-soft)] animate-fade-up">
             <p className="flex items-center gap-2 text-sm font-semibold text-brand-700">
               <BadgeCheck className="h-4 w-4" /> Usta ma’lumotlari
             </p>

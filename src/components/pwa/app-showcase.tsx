@@ -52,7 +52,7 @@ export function PhoneMockup({ className }: { className?: string }) {
       {/* Orqa yorug‘lik */}
       <div className="absolute -inset-10 -z-10 rounded-full bg-gradient-to-br from-brand-300/70 via-brand-200/40 to-amber-200/50 blur-3xl animate-glow" aria-hidden />
       <div className="animate-float">
-        <div className="relative rounded-[3rem] bg-ink p-[10px] shadow-[0_40px_80px_-30px_rgba(84,52,24,0.55)] ring-1 ring-black/10">
+        <div className="relative rounded-[3rem] bg-night p-[10px] shadow-[0_40px_80px_-30px_rgba(84,52,24,0.55)] ring-1 ring-black/10">
           <div className="relative aspect-[390/844] overflow-hidden rounded-[2.4rem] bg-cream">
             {SCREENS.map((s, idx) => (
               <Image
@@ -65,15 +65,15 @@ export function PhoneMockup({ className }: { className?: string }) {
                 className={cn("object-cover object-top transition-opacity duration-700", idx === i ? "opacity-100" : "opacity-0")}
               />
             ))}
-            <div className="absolute left-1/2 top-2.5 h-[22px] w-[86px] -translate-x-1/2 rounded-full bg-ink" />
+            <div className="absolute left-1/2 top-2.5 h-[22px] w-[86px] -translate-x-1/2 rounded-full bg-night" />
           </div>
-          <span className="absolute -left-[3px] top-28 h-12 w-[3px] rounded-l bg-ink" aria-hidden />
-          <span className="absolute -right-[3px] top-36 h-16 w-[3px] rounded-r bg-ink" aria-hidden />
+          <span className="absolute -left-[3px] top-28 h-12 w-[3px] rounded-l bg-night" aria-hidden />
+          <span className="absolute -right-[3px] top-36 h-16 w-[3px] rounded-r bg-night" aria-hidden />
         </div>
       </div>
 
       {/* Suzuvchi kartalar */}
-      <div className="absolute -left-10 top-24 hidden w-52 rounded-2xl bg-white/95 p-3 shadow-[var(--shadow-lift)] backdrop-blur sm:block animate-float [animation-delay:-2s]">
+      <div className="absolute -left-10 top-24 hidden w-52 rounded-2xl bg-surface/95 p-3 shadow-[var(--shadow-lift)] backdrop-blur sm:block animate-float [animation-delay:-2s]">
         <div className="flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-500">
             <Bell className="h-4 w-4" />
@@ -84,7 +84,7 @@ export function PhoneMockup({ className }: { className?: string }) {
           </div>
         </div>
       </div>
-      <div className="absolute -right-8 bottom-28 hidden rounded-2xl bg-white/95 px-3 py-2.5 shadow-[var(--shadow-lift)] backdrop-blur sm:block animate-float [animation-delay:-4s]">
+      <div className="absolute -right-8 bottom-28 hidden rounded-2xl bg-surface/95 px-3 py-2.5 shadow-[var(--shadow-lift)] backdrop-blur sm:block animate-float [animation-delay:-4s]">
         <p className="flex items-center gap-1 text-sm font-bold">
           <Star className="h-4 w-4 fill-amber-400 text-amber-400" /> 4.9
           <BadgeCheck className="ml-1 h-4 w-4 fill-brand-500 text-white" />
@@ -129,14 +129,14 @@ export function InstallSteps() {
 
   return (
     <div>
-      <div className="mx-auto mb-6 grid max-w-xs grid-cols-2 gap-1 rounded-full bg-white p-1 shadow-[var(--shadow-soft)]" role="tablist">
+      <div className="mx-auto mb-6 grid max-w-xs grid-cols-2 gap-1 rounded-full bg-surface p-1 shadow-[var(--shadow-soft)]" role="tablist">
         {(["android", "ios"] as const).map((t) => (
           <button
             key={t}
             role="tab"
             aria-selected={tab === t}
             onClick={() => setTab(t)}
-            className={cn("rounded-full py-2.5 text-sm font-bold transition", tab === t ? "bg-ink text-white" : "text-ink-2")}
+            className={cn("rounded-full py-2.5 text-sm font-bold transition", tab === t ? "bg-ink text-cream" : "text-ink-2")}
           >
             {t === "android" ? "Android" : "iPhone / iPad"}
           </button>
@@ -147,7 +147,7 @@ export function InstallSteps() {
           <li
             key={title}
             className={cn(
-              "relative overflow-hidden rounded-[1.5rem] bg-white p-5 shadow-[var(--shadow-soft)] transition-all duration-500",
+              "relative overflow-hidden rounded-[1.5rem] bg-surface p-5 shadow-[var(--shadow-soft)] transition-all duration-500",
               active === idx ? "-translate-y-1 ring-2 ring-brand-400 shadow-[var(--shadow-lift)]" : "opacity-80",
             )}
           >

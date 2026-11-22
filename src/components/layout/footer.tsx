@@ -4,7 +4,7 @@ import type { Settings } from "@/server/settings";
 
 export function Footer({ settings }: { settings: Settings }) {
   return (
-    <footer className="mt-10 hidden border-t border-line bg-white/60 lg:block">
+    <footer className="mt-10 hidden border-t border-line bg-surface/60 lg:block">
       <div className="mx-auto grid max-w-7xl grid-cols-4 gap-8 px-8 py-12 text-sm">
         <div className="space-y-3">
           <Logo />

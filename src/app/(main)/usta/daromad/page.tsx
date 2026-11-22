@@ -20,9 +20,9 @@ export default async function EarningsPage() {
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {[
           { icon: Wallet, l: "Jami sof daromad", v: money(e.total), tone: "bg-brand-500 text-white shadow-[var(--shadow-brand)]", sub: "text-white/80" },
-          { icon: TrendingUp, l: "Shu oy", v: money(e.thisMonth), tone: "bg-white", sub: "text-muted" },
-          { icon: Clock3, l: "Kutilayotgan", v: money(e.expected), tone: "bg-white", sub: "text-muted" },
-          { icon: Percent, l: "Platforma komissiyasi", v: `${e.commission}%`, tone: "bg-white", sub: "text-muted" },
+          { icon: TrendingUp, l: "Shu oy", v: money(e.thisMonth), tone: "bg-surface", sub: "text-muted" },
+          { icon: Clock3, l: "Kutilayotgan", v: money(e.expected), tone: "bg-surface", sub: "text-muted" },
+          { icon: Percent, l: "Platforma komissiyasi", v: `${e.commission}%`, tone: "bg-surface", sub: "text-muted" },
         ].map(({ icon: Icon, l, v, tone, sub }) => (
           <div key={l} className={`rounded-[1.5rem] p-4 shadow-[var(--shadow-soft)] ${tone}`}>
             <Icon className="mb-3 h-5 w-5" />

@@ -34,11 +34,11 @@ export default async function OrdersPage({ searchParams }: Props) {
       <LiveRefresh />
       <PageHeader title="Buyurtmalar" back={false} />
       {isMaster && (
-        <div className="mb-3 grid grid-cols-2 gap-1 rounded-full bg-white p-1 shadow-[var(--shadow-soft)] lg:max-w-md">
-          <Link href={`/buyurtmalar?tab=${tab}`} className={cn("rounded-full py-2.5 text-center text-sm font-bold transition", scope === "master" ? "bg-ink text-white" : "text-ink-2")}>
+        <div className="mb-3 grid grid-cols-2 gap-1 rounded-full bg-surface p-1 shadow-[var(--shadow-soft)] lg:max-w-md">
+          <Link href={`/buyurtmalar?tab=${tab}`} className={cn("rounded-full py-2.5 text-center text-sm font-bold transition", scope === "master" ? "bg-ink text-cream" : "text-ink-2")}>
             Kelgan buyurtmalar
           </Link>
-          <Link href={`/buyurtmalar?tab=${tab}&rol=mijoz`} className={cn("rounded-full py-2.5 text-center text-sm font-bold transition", scope === "client" ? "bg-ink text-white" : "text-ink-2")}>
+          <Link href={`/buyurtmalar?tab=${tab}&rol=mijoz`} className={cn("rounded-full py-2.5 text-center text-sm font-bold transition", scope === "client" ? "bg-ink text-cream" : "text-ink-2")}>
             Mening buyurtmalarim
           </Link>
         </div>

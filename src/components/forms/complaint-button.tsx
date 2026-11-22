@@ -76,7 +76,7 @@ export function ComplaintButton({
                 key={r}
                 type="button"
                 onClick={() => setReason(r)}
-                className={cn("rounded-full px-3.5 py-2 text-sm font-semibold transition", reason === r ? "bg-ink text-white" : "bg-white text-ink-2 shadow-[var(--shadow-soft)]")}
+                className={cn("rounded-full px-3.5 py-2 text-sm font-semibold transition", reason === r ? "bg-ink text-cream" : "bg-surface text-ink-2 shadow-[var(--shadow-soft)]")}
               >
                 {r}
               </button>

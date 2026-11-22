@@ -77,7 +77,7 @@ export function LoginForm() {
         </Link>
       </p>
 
-      <div className="mt-8 rounded-[1.5rem] bg-white p-4 shadow-[var(--shadow-soft)]">
+      <div className="mt-8 rounded-[1.5rem] bg-surface p-4 shadow-[var(--shadow-soft)]">
         <p className="mb-3 text-sm font-semibold text-ink-2">Demo hisoblar bilan sinab ko‘ring:</p>
         <div className="grid grid-cols-3 gap-2">
           {DEMO.map(({ label, phone: p, password: pw, icon: Icon }) => (

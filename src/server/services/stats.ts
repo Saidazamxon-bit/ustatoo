@@ -1,12 +1,9 @@
 import "server-only";
 import { db } from "../db";
 import { getCommissionPercent } from "../settings";
+import { startOfDayTz, startOfMonthTz, tzParts } from "@/lib/format";
 
-function startOfDay(d: Date) {
-  const x = new Date(d);
-  x.setHours(0, 0, 0, 0);
-  return x;
-}
+const startOfDay = (d: Date) => startOfDayTz(d);
 
 /** Usta daromadlari: to‘langan buyurtmalar, komissiya ayirilgan holda */
 export async function masterEarnings(masterId: string) {
@@ -18,12 +15,12 @@ export async function masterEarnings(masterId: string) {
   });
   const net = (v: number) => Math.round(v * (1 - commission / 100));
   const now = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthStart = startOfMonthTz(now);
   const months: { label: string; key: string; gross: number; net: number }[] = [];
   const labels = ["Yan", "Fev", "Mar", "Apr", "May", "Iyn", "Iyl", "Avg", "Sen", "Okt", "Noy", "Dek"];
   for (let i = 5; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    months.push({ label: labels[d.getMonth()], key: `${d.getFullYear()}-${d.getMonth()}`, gross: 0, net: 0 });
+    const p = tzParts(startOfMonthTz(now, -i));
+    months.push({ label: labels[p.month], key: `${p.year}-${p.month}`, gross: 0, net: 0 });
   }
   let total = 0;
   let thisMonth = 0;
@@ -31,7 +28,8 @@ export async function masterEarnings(masterId: string) {
     const d = o.completedAt ?? o.updatedAt;
     total += o.totalAmount;
     if (d >= monthStart) thisMonth += o.totalAmount;
-    const m = months.find((x) => x.key === `${d.getFullYear()}-${d.getMonth()}`);
+    const dp = tzParts(d);
+    const m = months.find((x) => x.key === `${dp.year}-${dp.month}`);
     if (m) {
       m.gross += o.totalAmount;
       m.net += net(o.totalAmount);
@@ -101,7 +99,7 @@ export async function adminStats() {
     const d = new Date(from.getTime() + i * 86_400_000);
     const next = new Date(d.getTime() + 86_400_000);
     days.push({
-      label: `${d.getDate()}.${String(d.getMonth() + 1).padStart(2, "0")}`,
+      label: `${tzParts(d).day}.${String(tzParts(d).month + 1).padStart(2, "0")}`,
       users: recentUsers.filter((u) => u.createdAt >= d && u.createdAt < next).length,
       orders: recentOrders.filter((o) => o.createdAt >= d && o.createdAt < next).length,
     });

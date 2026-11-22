@@ -63,7 +63,7 @@ export function useOpenChat() {
 export function ContactButtons({ masterId, phone, isSelf }: { masterId: string; phone?: string | null; isSelf: boolean }) {
   const { open, busy } = useOpenChat();
   const toast = useToast();
-  const circle = "flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-[var(--shadow-soft)] ring-1 ring-line transition hover:bg-brand-50 active:scale-95";
+  const circle = "flex h-12 w-12 items-center justify-center rounded-full bg-surface shadow-[var(--shadow-soft)] ring-1 ring-line transition hover:bg-brand-50 active:scale-95";
   return (
     <div className="flex gap-2.5">
       {phone ? (

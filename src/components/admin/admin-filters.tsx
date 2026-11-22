@@ -20,7 +20,7 @@ export function AdminFilters({ statuses, param = "holat", placeholder = "Qidiris
   return (
     <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center">
       {search && (
-        <form onSubmit={(e) => { e.preventDefault(); go("q", q.trim()); }} className="flex h-11 items-center gap-2 rounded-full bg-white px-4 shadow-[var(--shadow-soft)] lg:w-80">
+        <form onSubmit={(e) => { e.preventDefault(); go("q", q.trim()); }} className="flex h-11 items-center gap-2 rounded-full bg-surface px-4 shadow-[var(--shadow-soft)] lg:w-80">
           <Search className="h-4 w-4 text-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={placeholder} aria-label="Qidirish" className="min-w-0 flex-1 bg-transparent text-sm outline-none" />
         </form>
@@ -28,7 +28,7 @@ export function AdminFilters({ statuses, param = "holat", placeholder = "Qidiris
       {statuses && (
         <div className="no-scrollbar flex gap-2 overflow-x-auto">
           {[{ v: "", l: "Barchasi" }, ...statuses].map((s) => (
-            <button key={s.v} onClick={() => go(param, s.v)} className={cn("chip shrink-0", current === s.v ? "bg-ink text-white shadow-none" : "hover:text-brand-600")}>
+            <button key={s.v} onClick={() => go(param, s.v)} className={cn("chip shrink-0", current === s.v ? "bg-ink text-cream shadow-none" : "hover:text-brand-600")}>
               {s.l}
             </button>
           ))}

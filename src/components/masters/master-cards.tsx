@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 function AvailableDot({ on, className }: { on: boolean; className?: string }) {
   if (!on) return null;
   return (
-    <span className={cn("inline-flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-green-700 backdrop-blur", className)}>
+    <span className={cn("inline-flex items-center gap-1.5 rounded-full bg-surface/90 px-2.5 py-1 text-[11px] font-semibold text-green-700 backdrop-blur", className)}>
       <span className="relative flex h-2 w-2">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60" />
         <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
@@ -25,7 +25,7 @@ export function MasterCard({ m, favorite = false, className, priority }: { m: Ma
   return (
     <Link
       href={`/ustalar/${m.id}`}
-      className={cn("group relative block overflow-hidden rounded-[1.75rem] bg-white shadow-[var(--shadow-soft)] transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]", className)}
+      className={cn("group relative block overflow-hidden rounded-[1.75rem] bg-surface shadow-[var(--shadow-soft)] transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]", className)}
     >
       <div className="relative aspect-[4/3.4] overflow-hidden">
         <SmartImage src={cover} alt={`${m.user.name} — ${m.specialty}`} sizes="(max-width: 640px) 80vw, 320px" priority={priority} className="transition duration-500 group-hover:scale-105" />
@@ -62,7 +62,7 @@ export function MasterRow({ m, favorite = false }: { m: MasterCardData; favorite
     <Link href={`/ustalar/${m.id}`} className="card group flex gap-3.5 p-3 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)] animate-fade-up">
       <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl sm:h-32 sm:w-36">
         <SmartImage src={cover} alt={m.user.name} sizes="160px" className="transition duration-500 group-hover:scale-105" />
-        {m.isAvailable && <span className="absolute left-2 top-2 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white" title="Hozir ishlayapti" />}
+        {m.isAvailable && <span className="absolute left-2 top-2 h-3 w-3 rounded-full bg-green-500 ring-2 ring-surface" title="Hozir ishlayapti" />}
       </div>
       <div className="flex min-w-0 flex-1 flex-col py-0.5">
         <div className="flex items-start justify-between gap-2">
@@ -106,7 +106,7 @@ export function MasterPill({ m, active }: { m: MasterCardData; active?: boolean 
       href={`/ustalar/${m.id}`}
       className={cn(
         "flex w-[92px] shrink-0 flex-col items-center rounded-full px-2 pb-4 pt-2 text-center transition hover:-translate-y-0.5",
-        active ? "bg-brand-50 ring-2 ring-brand-300" : "bg-white shadow-[var(--shadow-soft)]",
+        active ? "bg-brand-50 ring-2 ring-brand-300" : "bg-surface shadow-[var(--shadow-soft)]",
       )}
     >
       <Avatar src={m.user.avatar ?? m.coverImage} name={m.user.name} size={64} />

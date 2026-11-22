@@ -9,7 +9,7 @@ const META: Record<PaymentMethod, { hint: string; color: string; icon: React.Rea
   PAYME: { hint: "Payme ilovasi orqali", color: "bg-[#33CCCC]", icon: <Wallet className="h-5 w-5" /> },
   UZCARD: { hint: "Uzcard bank kartasi", color: "bg-[#1A4FA0]", icon: <CreditCard className="h-5 w-5" /> },
   HUMO: { hint: "Humo bank kartasi", color: "bg-[#00A651]", icon: <CreditCard className="h-5 w-5" /> },
-  CASH: { hint: "Ish yakunida ustaga naqd", color: "bg-ink", icon: <Banknote className="h-5 w-5" /> },
+  CASH: { hint: "Ish yakunida ustaga naqd", color: "bg-night", icon: <Banknote className="h-5 w-5" /> },
 };
 
 /** Referensning o‘ng ekranidagi kabi to‘lov usuli kartalari */
@@ -27,7 +27,7 @@ export function PaymentMethods({ value, onChange }: { value: PaymentMethod; onCh
             onClick={() => onChange(m)}
             className={cn(
               "flex w-full items-center gap-3.5 rounded-2xl border p-3.5 text-left transition active:scale-[0.99]",
-              on ? "border-brand-400 bg-brand-50 shadow-[var(--shadow-soft)]" : "border-transparent bg-white shadow-[var(--shadow-soft)] hover:border-brand-200",
+              on ? "border-brand-400 bg-brand-50 shadow-[var(--shadow-soft)]" : "border-transparent bg-surface shadow-[var(--shadow-soft)] hover:border-brand-200",
             )}
           >
             <span className={cn("flex h-11 w-14 items-center justify-center rounded-xl text-white", META[m].color)}>

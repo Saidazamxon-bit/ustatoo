@@ -63,7 +63,7 @@ export function NotificationList({ initial }: { initial: N[] }) {
         {items.map((n) => {
           const Icon = ICON[n.type] ?? Bell;
           return (
-            <li key={n.id} className={cn("group flex items-start gap-3 rounded-[1.4rem] p-3.5 transition animate-fade-up", n.readAt ? "bg-white/60" : "bg-white shadow-[var(--shadow-soft)]")}>
+            <li key={n.id} className={cn("group flex items-start gap-3 rounded-[1.4rem] p-3.5 transition animate-fade-up", n.readAt ? "bg-surface/60" : "bg-surface shadow-[var(--shadow-soft)]")}>
               <button onClick={() => open(n)} className="flex min-w-0 flex-1 items-start gap-3 text-left">
                 <span className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-full", n.readAt ? "bg-cream text-muted" : "bg-brand-50 text-brand-500")}>
                   <Icon className="h-5 w-5" />
@@ -74,7 +74,7 @@ export function NotificationList({ initial }: { initial: N[] }) {
                     {!n.readAt && <span className="h-2 w-2 shrink-0 rounded-full bg-brand-500" />}
                   </span>
                   <span className="block text-sm text-ink-2">{n.body}</span>
-                  <span className="text-xs text-muted">{timeAgo(n.createdAt)}</span>
+                  <span suppressHydrationWarning className="text-xs text-muted">{timeAgo(n.createdAt)}</span>
                 </span>
               </button>
               <button onClick={() => remove(n.id)} aria-label="O‘chirish" className="rounded-full p-2 text-muted opacity-60 transition hover:bg-red-50 hover:text-danger group-hover:opacity-100">

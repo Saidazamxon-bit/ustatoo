@@ -43,7 +43,7 @@ export function WorkDaysPicker({ value, onChange }: { value: number[]; onChange:
             aria-pressed={on}
             title={d.label}
             onClick={() => onChange(on ? value.filter((x) => x !== d.value) : [...value, d.value].sort())}
-            className={cn("h-11 w-11 rounded-full text-sm font-bold transition", on ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-white text-ink-2 shadow-[var(--shadow-soft)]")}
+            className={cn("h-11 w-11 rounded-full text-sm font-bold transition", on ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-surface text-ink-2 shadow-[var(--shadow-soft)]")}
           >
             {d.short}
           </button>
@@ -101,7 +101,7 @@ export function MasterProfileForm({ initial, categories, name }: { initial: F; c
             // eslint-disable-next-line @next/next/no-img-element
             <img src={f.coverImage} alt="Cover" className="h-full w-full object-cover" />
           )}
-          <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-2 text-xs font-bold shadow">
+          <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-surface/90 px-3 py-2 text-xs font-bold shadow">
             <ImagePlus className="h-4 w-4" /> {uploading === "cover" ? "Yuklanmoqda…" : "Cover rasm"}
           </span>
           <input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => upload("cover", e.target.files?.[0])} />

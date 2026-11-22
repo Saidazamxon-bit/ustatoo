@@ -58,7 +58,7 @@ export function FavoriteButton({
       aria-pressed={fav}
       aria-label={fav ? "Sevimlilardan olib tashlash" : "Sevimlilarga qo‘shish"}
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-full bg-white/90 shadow-[var(--shadow-soft)] backdrop-blur transition active:scale-90",
+        "flex shrink-0 items-center justify-center rounded-full bg-surface/90 shadow-[var(--shadow-soft)] backdrop-blur transition active:scale-90",
         size === "sm" ? "h-9 w-9" : "h-11 w-11",
         className,
       )}

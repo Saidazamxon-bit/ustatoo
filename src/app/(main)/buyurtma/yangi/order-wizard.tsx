@@ -266,7 +266,7 @@ export function OrderWizard({
                   </button>
                   {q ? (
                     <div className="flex items-center gap-1.5 rounded-full bg-cream p-1">
-                      <button type="button" aria-label="Kamaytirish" onClick={() => setQty((p) => (p[s.id] <= 1 ? Object.fromEntries(Object.entries(p).filter(([k]) => k !== s.id)) : { ...p, [s.id]: p[s.id] - 1 }))} className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-brand-600 shadow-sm">
+                      <button type="button" aria-label="Kamaytirish" onClick={() => setQty((p) => (p[s.id] <= 1 ? Object.fromEntries(Object.entries(p).filter(([k]) => k !== s.id)) : { ...p, [s.id]: p[s.id] - 1 }))} className="flex h-8 w-8 items-center justify-center rounded-full bg-surface text-brand-600 shadow-sm">
                         <Minus className="h-4 w-4" />
                       </button>
                       <input
@@ -340,7 +340,7 @@ export function OrderWizard({
                   aria-pressed={day === i}
                   className={cn(
                     "flex w-16 shrink-0 flex-col items-center rounded-2xl py-3 transition",
-                    day === i ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-white shadow-[var(--shadow-soft)]",
+                    day === i ? "bg-brand-500 text-white shadow-[var(--shadow-brand)]" : "bg-surface shadow-[var(--shadow-soft)]",
                   )}
                 >
                   <span className={cn("text-xs", day === i ? "text-white/80" : "text-muted")}>{i === 0 && d.toDateString() === new Date().toDateString() ? "Bugun" : weekdayShort(d)}</span>
@@ -365,7 +365,7 @@ export function OrderWizard({
                       aria-pressed={slot === s}
                       className={cn(
                         "rounded-xl py-2.5 text-sm font-semibold transition",
-                        slot === s ? "bg-ink text-white" : "bg-white shadow-[var(--shadow-soft)]",
+                        slot === s ? "bg-ink text-cream" : "bg-surface shadow-[var(--shadow-soft)]",
                         dis && "cursor-not-allowed opacity-35 line-through",
                       )}
                     >
@@ -411,7 +411,7 @@ export function OrderWizard({
       </div>
 
       {/* Pastki panel: jami va keyingi qadam */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/90 px-4 pb-[max(0.9rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-lg">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/90 px-4 pb-[max(0.9rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-lg">
         <div className="mx-auto flex max-w-2xl items-center gap-4">
           <div className="min-w-0 flex-1">
             <p className="text-xs text-muted">Taxminiy jami</p>

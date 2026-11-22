@@ -79,7 +79,7 @@ export function SearchBar({
     <div className={cn("flex items-center gap-3", className)}>
       <form
         role="search"
-        className="flex h-[52px] flex-1 items-center gap-2.5 rounded-full bg-white pl-4 pr-2 shadow-[var(--shadow-soft)] ring-brand-200 transition focus-within:ring-4"
+        className="flex h-[52px] flex-1 items-center gap-2.5 rounded-full bg-surface pl-4 pr-2 shadow-[var(--shadow-soft)] ring-brand-200 transition focus-within:ring-4"
         onSubmit={(e) => {
           e.preventDefault();
           submit(q);
@@ -110,7 +110,7 @@ export function SearchBar({
         type="button"
         aria-label="Filtrlar"
         onClick={() => (onFilter ? onFilter() : router.push(`/qidiruv?filtr=1${q ? `&q=${encodeURIComponent(q)}` : ""}`))}
-        className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-white shadow-[var(--shadow-soft)] transition hover:bg-brand-50 active:scale-95"
+        className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-surface shadow-[var(--shadow-soft)] transition hover:bg-brand-50 active:scale-95"
       >
         <SlidersHorizontal className="h-5 w-5" />
       </button>

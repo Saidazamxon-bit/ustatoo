@@ -49,7 +49,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               </span>
             </>
           );
-          const cls = cn("pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl bg-white px-4 py-3 shadow-[var(--shadow-lift)] animate-fade-up");
+          const cls = cn("pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl bg-surface px-4 py-3 shadow-[var(--shadow-lift)] animate-fade-up");
           return t.href ? (
             <Link key={t.id} href={t.href} className={cls}>
               {content}

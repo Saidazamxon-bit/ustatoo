@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Tungi rejim: <html data-theme="dark"> (tanlov "Tizim" bo‘lsa, qurilma sozlamasidan aniqlanadi) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* ───────── UstaTop dizayn tizimi ─────────
    Cream fon, to‘q sariq aksent (#F47721), oq kartalar, yumshoq soyalar. */
 @theme {
@@ -22,6 +25,10 @@
   --color-ink-2: #4a423c;
   --color-muted: #8c827a;
   --color-line: #eee5db;
+  --color-surface: #ffffff; /* kartalar, inputlar, tugmalar foni */
+  --color-night: #1f1a17; /* har ikki rejimda ham to‘q qoladigan bloklar (bannerlar) */
+  --color-skeleton-a: #f1e9df;
+  --color-skeleton-b: #f8f2ea;
   --color-success: #16a34a;
   --color-danger: #dc2626;
   --color-info: #2563eb;
@@ -70,6 +77,68 @@
   }
 }
 
+/* ───────── Tungi rejim palitrasi ─────────
+   Faqat tokenlar qayta belgilanadi — komponentlar o‘zgarmaydi. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-cream: #14110f;
+  --color-cream-2: #221c18;
+  --color-surface: #1d1916;
+  --color-night: #2a2320;
+  --color-ink: #f4eee7;
+  --color-ink-2: #d6ccc2;
+  --color-muted: #a0958c;
+  --color-line: #342c27;
+  --color-skeleton-a: #221c18;
+  --color-skeleton-b: #2b241f;
+
+  /* Brend: to‘q sariq o‘zgarmaydi, och fonlar to‘q tusga, matnlar ochroq */
+  --color-brand-50: #2b1a0e;
+  --color-brand-100: #3c2312;
+  --color-brand-200: #5b3417;
+  --color-brand-300: #8a4c1f;
+  --color-brand-600: #f98a43;
+  --color-brand-700: #ffb07a;
+  --color-brand-800: #ffc8a0;
+
+  /* Holat ranglari */
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+  --color-info: #60a5fa;
+  --color-warn: #fbbf24;
+  --color-green-50: #10281a;
+  --color-green-600: #22a95b;
+  --color-green-700: #6ee7a0;
+  --color-green-800: #86efac;
+  --color-red-50: #2e1515;
+  --color-red-100: #3d1a1a;
+  --color-red-600: #f87171;
+  --color-red-700: #fca5a5;
+  --color-amber-50: #2b2110;
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fcd34d;
+  --color-amber-800: #fde68a;
+  --color-amber-900: #fef3c7;
+  --color-blue-50: #12203a;
+  --color-blue-600: #60a5fa;
+  --color-blue-700: #93c5fd;
+  --color-blue-800: #bfdbfe;
+  --color-violet-50: #221735;
+  --color-violet-700: #c4b5fd;
+
+  --shadow-soft: 0 10px 30px -14px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.04);
+  --shadow-lift: 0 22px 44px -18px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow-brand: 0 10px 24px -10px rgb(244 119 33 / 0.6);
+}
+
+/* Mavzu almashganda ranglar yumshoq o‘tadi (faqat almashtirish paytida qo‘shiladi) */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease, fill 0.2s ease, box-shadow 0.3s ease !important;
+}
+
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
@@ -93,10 +162,10 @@
 
 @layer components {
   .card {
-    @apply rounded-[var(--radius-card)] bg-white shadow-[var(--shadow-soft)];
+    @apply rounded-[var(--radius-card)] bg-surface shadow-[var(--shadow-soft)];
   }
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-sm font-medium text-ink-2 shadow-[var(--shadow-soft)] transition;
+    @apply inline-flex items-center gap-1.5 rounded-full bg-surface px-3.5 py-2 text-sm font-medium text-ink-2 shadow-[var(--shadow-soft)] transition;
   }
   .section-title {
     @apply text-lg font-bold tracking-tight text-ink md:text-xl;
@@ -108,12 +177,12 @@
     display: none;
   }
   .skeleton {
-    background: linear-gradient(90deg, #f1e9df 25%, #f8f2ea 37%, #f1e9df 63%);
+    background: linear-gradient(90deg, var(--color-skeleton-a) 25%, var(--color-skeleton-b) 37%, var(--color-skeleton-a) 63%);
     background-size: 400% 100%;
     @apply animate-shimmer rounded-2xl;
   }
   .glass {
-    @apply bg-white/70 backdrop-blur-md;
+    @apply bg-surface/70 backdrop-blur-md;
   }
   .pb-nav {
     padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));

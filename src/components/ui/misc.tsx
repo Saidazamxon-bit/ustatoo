@@ -31,7 +31,7 @@ export function Avatar({ src, name, size = 44, className, ring }: { src?: string
   const tint = AVATAR_TINTS[name.length % AVATAR_TINTS.length];
   return (
     <span
-      className={cn("relative inline-flex shrink-0 overflow-hidden rounded-full bg-cream-2", ring && "ring-[3px] ring-white", className)}
+      className={cn("relative inline-flex shrink-0 overflow-hidden rounded-full bg-cream-2", ring && "ring-[3px] ring-surface", className)}
       style={{ width: size, height: size }}
     >
       {src ? (

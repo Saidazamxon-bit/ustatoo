@@ -55,8 +55,8 @@ export function IosInstallGuide() {
 
       {/* Animatsion telefon: qaysi tugmani bosish kerakligini ko‘rsatadi */}
       <div className="relative mx-auto mb-5 h-[260px] w-[200px] select-none" aria-hidden>
-        <div className="absolute inset-0 rounded-[2.2rem] border-[6px] border-ink bg-cream shadow-[var(--shadow-lift)]">
-          <div className="absolute left-1/2 top-2 h-4 w-16 -translate-x-1/2 rounded-full bg-ink" />
+        <div className="absolute inset-0 rounded-[2.2rem] border-[6px] border-night bg-cream shadow-[var(--shadow-lift)]">
+          <div className="absolute left-1/2 top-2 h-4 w-16 -translate-x-1/2 rounded-full bg-night" />
           {/* Sahifa kontenti */}
           <div className="absolute inset-x-3 top-9 space-y-2">
             <div className="flex items-center gap-1.5">
@@ -75,7 +75,7 @@ export function IosInstallGuide() {
           </div>
 
           {/* Safari paneli */}
-          <div className={cn("absolute inset-x-0 flex items-center justify-around bg-white/95 px-3 py-2", isIpad ? "top-6 rounded-none" : "bottom-0 rounded-b-[1.7rem]")}>
+          <div className={cn("absolute inset-x-0 flex items-center justify-around bg-surface/95 px-3 py-2", isIpad ? "top-6 rounded-none" : "bottom-0 rounded-b-[1.7rem]")}>
             <span className="h-1.5 w-4 rounded bg-line" />
             <span className="h-1.5 w-4 rounded bg-line" />
             <span className={cn("relative flex h-7 w-7 items-center justify-center rounded-lg transition-colors", step === 0 ? "bg-brand-500 text-white" : "text-info")}>
@@ -89,7 +89,7 @@ export function IosInstallGuide() {
           {/* Ulashish menyusi */}
           <div
             className={cn(
-              "absolute inset-x-2 rounded-2xl bg-white p-2 shadow-[var(--shadow-lift)] transition-all duration-500",
+              "absolute inset-x-2 rounded-2xl bg-surface p-2 shadow-[var(--shadow-lift)] transition-all duration-500",
               step >= 1 ? "bottom-2 opacity-100" : "-bottom-24 opacity-0",
             )}
           >
@@ -103,7 +103,7 @@ export function IosInstallGuide() {
           {/* "Add" tasdiqlash */}
           <div
             className={cn(
-              "absolute inset-x-2 top-8 flex items-center justify-between rounded-xl bg-white px-2.5 py-2 text-[10px] font-semibold shadow-[var(--shadow-lift)] transition-all duration-500",
+              "absolute inset-x-2 top-8 flex items-center justify-between rounded-xl bg-surface px-2.5 py-2 text-[10px] font-semibold shadow-[var(--shadow-lift)] transition-all duration-500",
               step === 2 ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0",
             )}
           >
@@ -127,7 +127,7 @@ export function IosInstallGuide() {
               onClick={() => setStep(i)}
               className={cn(
                 "flex w-full items-start gap-3 rounded-2xl p-3 text-left transition",
-                step === i ? "bg-white shadow-[var(--shadow-soft)] ring-2 ring-brand-300" : "bg-white/50",
+                step === i ? "bg-surface shadow-[var(--shadow-soft)] ring-2 ring-brand-300" : "bg-surface/50",
               )}
             >
               <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-bold transition", step === i ? "bg-brand-500 text-white" : "bg-cream-2 text-ink-2")}>

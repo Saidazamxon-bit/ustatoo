@@ -111,7 +111,7 @@ export function PaymentView({ order, master, demo }: Props) {
             {demo ? "Demo rejim: haqiqiy pul yechilmaydi. To‘lov jarayoni to‘liq simulyatsiya qilinadi." : "To‘lov provayderning himoyalangan sahifasida amalga oshiriladi."}
           </p>
 
-          <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/90 px-4 pb-[max(0.9rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-lg">
+          <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/90 px-4 pb-[max(0.9rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-lg">
             <div className="mx-auto flex max-w-xl items-center gap-4">
               <div className="min-w-0 flex-1">
                 <p className="text-xs text-muted">To‘lanadi</p>
