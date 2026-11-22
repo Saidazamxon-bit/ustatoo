@@ -5,6 +5,7 @@ import { requireMaster } from "@/server/auth";
 import { masterProfileSchema } from "@/lib/validators";
 import { isValidLocation, locate } from "@/lib/regions";
 import { refreshMasterIndex } from "@/server/services/masters";
+import { isAllowedImageUrl } from "@/lib/utils";
 
 export const PATCH = route(async (req) => {
   const { masterId, user } = await requireMaster();
@@ -24,7 +25,7 @@ export const PATCH = route(async (req) => {
       ...locate(input.region, input.district),
     },
   });
-  if (avatar !== undefined && (avatar === null || avatar.startsWith("/api/files/") || avatar.startsWith("/img/"))) {
+  if (avatar !== undefined && (avatar === null || isAllowedImageUrl(avatar))) {
     await db.user.update({ where: { id: user.id }, data: { avatar } });
   }
   await refreshMasterIndex(masterId);

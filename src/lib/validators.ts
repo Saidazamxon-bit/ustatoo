@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { COMPLAINT_REASONS, PAYMENT_METHODS, PRICE_UNITS, ROLES } from "./constants";
 import { normalizePhone } from "./format";
+import { isAllowedImageUrl } from "./utils";
 
 // Barcha validatsiya xabarlari o‘zbek tilida bo‘lsin
 z.setErrorMap((issue, ctx) => {
@@ -30,10 +31,7 @@ const phoneField = z
 
 const password = z.string().min(6, "Parol kamida 6 belgidan iborat bo‘lsin").max(100);
 const name = z.string().trim().min(2, "Ism kamida 2 harf").max(80, "Ism juda uzun");
-const imageUrl = z
-  .string()
-  .max(500)
-  .refine((v) => v.startsWith("/img/") || v.startsWith("/api/files/"), "Rasm manzili noto‘g‘ri");
+const imageUrl = z.string().max(500).refine(isAllowedImageUrl, "Rasm manzili noto‘g‘ri");
 const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Vaqt formati HH:MM");
 
 export const loginSchema = z.object({

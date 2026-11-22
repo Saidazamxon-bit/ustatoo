@@ -14,7 +14,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
   const { q, holat } = await searchParams;
   const where: Prisma.OrderWhereInput = {
     ...(holat ? { status: holat } : {}),
-    ...(q ? { OR: [{ code: { contains: q.toUpperCase() } }, { client: { name: { contains: q } } }, { master: { user: { name: { contains: q } } } }] } : {}),
+    ...(q ? { OR: [{ code: { contains: q.toUpperCase() } }, { client: { name: { contains: q, mode: "insensitive" } } }, { master: { user: { name: { contains: q, mode: "insensitive" } } } }] } : {}),
   };
   const [orders, total] = await Promise.all([
     db.order.findMany({ where, orderBy: { createdAt: "desc" }, take: 100, include: { client: { select: { name: true } }, master: { select: { user: { select: { name: true } } } } } }),

@@ -12,7 +12,7 @@ export default async function AdminServicesPage({ searchParams }: { searchParams
   const { q, holat } = await searchParams;
   const where: Prisma.ServiceWhereInput = {
     ...(holat === "active" ? { isActive: true } : holat === "hidden" ? { isActive: false } : {}),
-    ...(q ? { OR: [{ title: { contains: q } }, { master: { user: { name: { contains: q } } } }] } : {}),
+    ...(q ? { OR: [{ title: { contains: q, mode: "insensitive" } }, { master: { user: { name: { contains: q, mode: "insensitive" } } } }] } : {}),
   };
   const services = await db.service.findMany({
     where,

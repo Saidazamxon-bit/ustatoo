@@ -2,16 +2,18 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { put } from "@vercel/blob";
 import { MAX_UPLOAD_BYTES } from "@/lib/constants";
 import { badRequest } from "./errors";
 
 /**
- * Fayl saqlash abstraksiyasi. Hozir lokal disk ishlatiladi; S3/MinIO kabi
- * xizmatga o‘tish uchun StorageDriver interfeysini amalga oshiruvchi yangi
- * drayver yozib, `storage` eksportini almashtirish kifoya.
+ * Fayl saqlash abstraksiyasi:
+ *  - BLOB_READ_WRITE_TOKEN bo‘lsa — Vercel Blob (production, serverless uchun)
+ *  - aks holda — lokal disk (UPLOAD_DIR), fayllar /api/files/* orqali beriladi.
+ * S3/MinIO kabi xizmat uchun StorageDriver interfeysini amalga oshirish kifoya.
  */
 export interface StorageDriver {
-  save(data: Buffer, ext: string): Promise<string>; // public URL qaytaradi
+  save(data: Buffer, ext: string, mime: string): Promise<string>; // public URL qaytaradi
   read(key: string): Promise<Buffer | null>;
 }
 
@@ -37,7 +39,17 @@ class LocalStorage implements StorageDriver {
   }
 }
 
-export const storage: StorageDriver = new LocalStorage();
+class BlobStorage implements StorageDriver {
+  async save(data: Buffer, ext: string, mime: string) {
+    const blob = await put(`uploads/${randomUUID()}.${ext}`, data, { access: "public", contentType: mime, addRandomSuffix: false });
+    return blob.url;
+  }
+  async read() {
+    return null; // Blob fayllari to‘g‘ridan-to‘g‘ri CDN URL orqali beriladi
+  }
+}
+
+export const storage: StorageDriver = process.env.BLOB_READ_WRITE_TOKEN ? new BlobStorage() : new LocalStorage();
 
 /** Fayl turini kengaytmaga emas, "magic bytes"ga qarab aniqlaydi. */
 export function detectImage(buf: Buffer): { ext: string; mime: string } | null {
@@ -58,5 +70,5 @@ export async function saveImage(file: File): Promise<string> {
   const buf = Buffer.from(await file.arrayBuffer());
   const kind = detectImage(buf);
   if (!kind) throw badRequest("Faqat JPG, PNG yoki WEBP rasmlar qabul qilinadi");
-  return storage.save(buf, kind.ext);
+  return storage.save(buf, kind.ext, kind.mime);
 }

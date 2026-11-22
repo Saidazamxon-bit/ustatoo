@@ -12,7 +12,7 @@ export default async function AdminReviewsPage({ searchParams }: { searchParams:
   const { q, holat } = await searchParams;
   const where: Prisma.ReviewWhereInput = {
     ...(holat === "HIDDEN" || holat === "VISIBLE" ? { status: holat } : holat === "low" ? { rating: { lte: 3 } } : {}),
-    ...(q ? { OR: [{ comment: { contains: q } }, { client: { name: { contains: q } } }, { master: { user: { name: { contains: q } } } }] } : {}),
+    ...(q ? { OR: [{ comment: { contains: q, mode: "insensitive" } }, { client: { name: { contains: q, mode: "insensitive" } } }, { master: { user: { name: { contains: q, mode: "insensitive" } } } }] } : {}),
   };
   const reviews = await db.review.findMany({
     where,

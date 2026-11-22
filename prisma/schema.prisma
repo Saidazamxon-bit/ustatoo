@@ -1,6 +1,6 @@
 // UstaTop ma'lumotlar bazasi sxemasi.
-// Dev muhitda SQLite ishlatiladi. PostgreSQL ga o'tish uchun provider ni "postgresql"
-// ga almashtiring va DATABASE_URL ni yangilang — sxema ikkalasiga ham mos.
+// PostgreSQL (production: Neon). DATABASE_URL — pooled ulanish (ilova uchun),
+// DATABASE_URL_UNPOOLED — to'g'ridan-to'g'ri ulanish (sxema migratsiyasi uchun).
 // Holat (status/role) maydonlari String sifatida saqlanadi, ruxsat etilgan qiymatlar
 // src/lib/constants.ts da yagona manba sifatida belgilangan.
 
@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model User {
@@ -318,4 +319,16 @@ model Complaint {
 model Setting {
   key   String @id
   value String
+}
+
+/// Real vaqt hodisalari "outbox"i: SSE endpoint shu jadvaldan o'qiydi.
+/// Bir nechta server instance (serverless) o'rtasida hodisalarni yetkazish uchun.
+model RealtimeEvent {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  payload   String
+  createdAt DateTime @default(now())
+
+  @@index([userId, id])
+  @@index([createdAt])
 }

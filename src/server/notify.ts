@@ -24,7 +24,7 @@ export async function notify(input: NotifyInput) {
   const n = await db.notification.create({
     data: { userId: input.userId, type: input.type, title: input.title, body: input.body, link: input.link },
   });
-  publish(input.userId, {
+  await publish(input.userId, {
     type: "notification",
     notification: { id: n.id, title: n.title, body: n.body, link: n.link, type: n.type },
   });

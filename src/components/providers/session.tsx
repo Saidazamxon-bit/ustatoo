@@ -97,14 +97,17 @@ export function SessionProvider({
     let retry = 1000;
     let timer: ReturnType<typeof setTimeout>;
     let closed = false;
+    let lastEventId = "";
 
     const connect = () => {
-      es = new EventSource("/api/stream");
+      // Brauzer o‘zi qayta ulanganda Last-Event-ID yuboradi; qo‘lda ulanganda ?after= orqali
+      es = new EventSource(lastEventId ? `/api/stream?after=${lastEventId}` : "/api/stream");
       es.onopen = () => {
         setConnected(true);
         retry = 1000;
       };
       es.onmessage = (ev) => {
+        if (ev.lastEventId) lastEventId = ev.lastEventId;
         let data: RealtimeMessage;
         try {
           data = JSON.parse(ev.data);
@@ -125,8 +128,9 @@ export function SessionProvider({
       };
       es.onerror = () => {
         setConnected(false);
-        es?.close();
-        if (!closed) {
+        // CONNECTING holatida brauzer o‘zi qayta ulanadi; faqat butunlay yopilganda qo‘lda ulanamiz
+        if (es?.readyState === EventSource.CLOSED && !closed) {
+          es.close();
           timer = setTimeout(connect, retry);
           retry = Math.min(retry * 2, 30_000);
         }

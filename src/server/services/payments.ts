@@ -22,7 +22,7 @@ export async function startPayment(user: CurrentUser, orderId: string, method: P
       db.payment.updateMany({ where: { orderId, status: "PENDING" }, data: { status: "CANCELLED" } }),
       db.order.update({ where: { id: orderId }, data: { paymentMethod: "CASH", paymentStatus: "UNPAID" } }),
     ]);
-    publish(order.master.userId, { type: "order", orderId, status: order.status });
+    await publish(order.master.userId, { type: "order", orderId, status: order.status });
     return { redirectUrl: `/buyurtmalar/${orderId}?tolov=naqd` };
   }
 
@@ -91,7 +91,7 @@ export async function confirmDemoPayment(user: CurrentUser, paymentId: string, a
     body: `${payment.order.code} uchun ${money(payment.amount)} to‘lovingiz qabul qilindi.`,
     link: `/buyurtmalar/${payment.orderId}`,
   });
-  for (const id of [user.id, payment.order.master.userId]) publish(id, { type: "order", orderId: payment.orderId, status: payment.order.status });
+  for (const id of [user.id, payment.order.master.userId]) await publish(id, { type: "order", orderId: payment.orderId, status: payment.order.status });
   return { orderId: payment.orderId, transactionId: tx };
 }
 

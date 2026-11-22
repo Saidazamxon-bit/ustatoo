@@ -15,7 +15,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
   const me = await getCurrentUser();
   const where: Prisma.UserWhereInput = {
     ...(holat === "BLOCKED" ? { status: "BLOCKED" } : holat ? { role: holat } : {}),
-    ...(q ? { OR: [{ name: { contains: q } }, { phone: { contains: q.replace(/\s/g, "") } }, { email: { contains: q } }] } : {}),
+    ...(q ? { OR: [{ name: { contains: q, mode: "insensitive" } }, { phone: { contains: q.replace(/\s/g, "") } }, { email: { contains: q, mode: "insensitive" } }] } : {}),
   };
   const users = await db.user.findMany({
     where,

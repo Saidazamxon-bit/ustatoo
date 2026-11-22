@@ -15,7 +15,7 @@ export default async function AdminMastersPage({ searchParams }: { searchParams:
   const { q, holat } = await searchParams;
   const where: Prisma.MasterProfileWhereInput = {
     ...(holat ? { verification: holat } : {}),
-    ...(q ? { OR: [{ user: { name: { contains: q } } }, { specialty: { contains: q } }] } : {}),
+    ...(q ? { OR: [{ user: { name: { contains: q, mode: "insensitive" } } }, { specialty: { contains: q, mode: "insensitive" } }] } : {}),
   };
   const masters = await db.masterProfile.findMany({
     where,

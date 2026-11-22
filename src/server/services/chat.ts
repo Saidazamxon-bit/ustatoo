@@ -80,7 +80,7 @@ export async function markRead(user: CurrentUser, conversationId: string, otherU
     where: { conversationId, senderId: { not: user.id }, readAt: null },
     data: { readAt: new Date() },
   });
-  if (res.count) publish(otherUserId, { type: "message_read", conversationId, readerId: user.id });
+  if (res.count) await publish(otherUserId, { type: "message_read", conversationId, readerId: user.id });
 }
 
 export async function sendMessage(user: CurrentUser, conversationId: string, input: { text?: string; image?: string }) {
@@ -90,8 +90,8 @@ export async function sendMessage(user: CurrentUser, conversationId: string, inp
   const prevUnread = await db.message.count({ where: { conversationId, senderId: user.id, readAt: null } });
   const message = await db.message.create({ data: { conversationId, senderId: user.id, text, image: input.image ?? null } });
   await db.conversation.update({ where: { id: conversationId }, data: { lastMessageAt: message.createdAt } });
-  publish(other.id, { type: "message", conversationId, message });
-  publish(user.id, { type: "message", conversationId, message });
+  await publish(other.id, { type: "message", conversationId, message });
+  await publish(user.id, { type: "message", conversationId, message });
   // Har bir xabar uchun emas, faqat yangi o‘qilmagan "to‘lqin" boshlanganda bildirishnoma
   if (prevUnread === 0) {
     await notify({

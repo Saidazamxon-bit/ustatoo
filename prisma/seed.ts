@@ -218,6 +218,7 @@ const hoursFromNow = (h: number) => new Date(Date.now() + h * 3_600_000);
 async function main() {
   console.log("🧹 Eski ma’lumotlar tozalanmoqda...");
   await db.$transaction([
+    db.realtimeEvent.deleteMany(),
     db.complaint.deleteMany(),
     db.notification.deleteMany(),
     db.message.deleteMany(),

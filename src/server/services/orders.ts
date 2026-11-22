@@ -75,7 +75,7 @@ export async function createOrder(user: CurrentUser, input: CreateInput) {
     body: `${user.name} sizga ${money(totalAmount)} lik buyurtma yubordi (${order.code}).`,
     link: `/buyurtmalar/${order.id}`,
   });
-  publish(master.userId, { type: "order", orderId: order.id, status: order.status });
+  await publish(master.userId, { type: "order", orderId: order.id, status: order.status });
   return order;
 }
 
@@ -117,7 +117,7 @@ export async function markViewedByMaster(orderId: string, masterUserId: string, 
   const res = await db.order.updateMany({ where: { id: orderId, status: "NEW" }, data: { status: "PENDING" } });
   if (res.count) {
     await db.orderEvent.create({ data: { orderId, status: "PENDING", actorId: masterUserId, note: "Usta buyurtmani ko‘rib chiqmoqda" } });
-    publish(clientId, { type: "order", orderId, status: "PENDING" });
+    await publish(clientId, { type: "order", orderId, status: "PENDING" });
   }
 }
 
@@ -189,7 +189,7 @@ export async function applyOrderAction(user: CurrentUser, orderId: string, actio
       link: `/buyurtmalar/${order.id}`,
     });
   }
-  for (const id of [order.clientId, order.master.userId]) publish(id, { type: "order", orderId: order.id, status: rule.to ?? order.status });
+  for (const id of [order.clientId, order.master.userId]) await publish(id, { type: "order", orderId: order.id, status: rule.to ?? order.status });
 }
 
 /** Mijoz to‘lovdan oldin buyurtmadan xizmatni olib tashlashi */
@@ -207,7 +207,7 @@ export async function removeOrderItem(user: CurrentUser, orderId: string, itemId
     db.order.update({ where: { id: orderId }, data: { totalAmount: total } }),
     db.orderEvent.create({ data: { orderId, status: order.status, actorId: user.id, note: `"${item.title}" xizmati olib tashlandi` } }),
   ]);
-  publish(order.master.userId, { type: "order", orderId, status: order.status });
+  await publish(order.master.userId, { type: "order", orderId, status: order.status });
 }
 
 export async function listOrders(user: CurrentUser, scope: "client" | "master", tab: "active" | "history" | "all" = "all") {

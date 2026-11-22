@@ -6,7 +6,7 @@ Mijozlar kerakli ustani topadi, narxlarni solishtiradi, onlayn buyurtma beradi, 
 
 ```bash
 npm install
-cp .env.example .env          # AUTH_SECRET ni o‘zgartiring
+cp .env.example .env          # DATABASE_URL (PostgreSQL) va AUTH_SECRET ni sozlang
 npm run setup                 # prisma generate + db push + demo ma'lumotlar
 npm run dev                   # http://localhost:3000
 ```
@@ -26,7 +26,7 @@ Kirish sahifasida bitta bosish bilan kirish tugmalari ham bor. Demo ma'lumotlarn
 ## Texnologiyalar
 
 - **Next.js 15** (App Router, Server Components, Route Handlers) + **React 19** + **TypeScript**
-- **Prisma** ORM — dev uchun SQLite, PostgreSQL ga o‘tishga tayyor
+- **Prisma** ORM + **PostgreSQL** (production: Neon)
 - **Tailwind CSS 4** — dizayn tokenlari `src/app/globals.css` da
 - **JWT** sessiyalar (`jose`, httpOnly cookie) + **bcrypt** parollar
 - **Zod** — server va mijoz uchun umumiy validatsiya (`src/lib/validators.ts`)
@@ -74,11 +74,16 @@ prisma/                Sxema va demo ma'lumotlar (seed)
 
 ### Real vaqt
 
-`/api/stream` (SSE) har bir foydalanuvchiga xabarlar, o‘qilganlik, bildirishnomalar va buyurtma holatlarini yuboradi. Hodisalar shinasi (`src/server/events.ts`) bitta server uchun xotirada; bir nechta instance uchun uni Redis Pub/Sub bilan almashtirish kifoya (interfeys o‘zgarmaydi).
+Hodisalar `RealtimeEvent` jadvaliga yoziladi (outbox), `/api/stream` (SSE) esa foydalanuvchining yangi hodisalarini o‘qib yuboradi. Har bir hodisa `id` bilan keladi — qayta ulanishda (`Last-Event-ID`) hech narsa yo‘qolmaydi. Bu yondashuv serverless (Vercel) va bir nechta instance’da ishlaydi.
 
 ### Rasmlar
 
-Yuklangan fayllar `storage/uploads` ga saqlanadi va `/api/files/*` orqali beriladi. Fayl turi “magic bytes” bo‘yicha tekshiriladi (JPG/PNG/WEBP, ≤ 5 MB). S3 kabi xizmatga o‘tish uchun `src/server/storage.ts` dagi `StorageDriver` ni amalga oshiring.
+`BLOB_READ_WRITE_TOKEN` bo‘lsa fayllar **Vercel Blob**ga, aks holda `storage/uploads` ga saqlanadi (`/api/files/*`). Fayl turi “magic bytes” bo‘yicha tekshiriladi (JPG/PNG/WEBP, ≤ 5 MB).
+
+## Vercel’ga deploy
+
+- Build buyrug‘i: `npm run vercel-build` (sxemani bazaga qo‘llaydi, baza bo‘sh bo‘lsa demo ma'lumotlarni yuklaydi, so‘ng `next build`)
+- Env: `DATABASE_URL`, `DATABASE_URL_UNPOOLED` (Neon integratsiyasi), `BLOB_READ_WRITE_TOKEN` (Vercel Blob), `AUTH_SECRET`
 
 ## Xavfsizlik
 
@@ -87,10 +92,6 @@ Yuklangan fayllar `storage/uploads` ga saqlanadi va `/api/files/*` orqali berila
 - Origin tekshiruvi (CSRF), login/ro‘yxat/xabar/yuklash uchun rate limit
 - Barcha kiritishlar Zod bilan tekshiriladi; xatolar o‘zbek tilida
 - Path traversal himoyasi, xavfsizlik sarlavhalari (`next.config.ts`)
-
-## PostgreSQL ga o‘tish
-
-`prisma/schema.prisma` da `provider = "postgresql"`, `.env` da `DATABASE_URL=postgresql://...`, so‘ng `npx prisma db push && npm run db:seed`.
 
 ## Rasm manbalari
 
