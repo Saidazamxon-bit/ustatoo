@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+/* ───────── UstaTop dizayn tizimi ─────────
+   Cream fon, to‘q sariq aksent (#F47721), oq kartalar, yumshoq soyalar. */
+@theme {
+  --font-sans: var(--font-urbanist), ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #fff5ed;
+  --color-brand-100: #ffe8d5;
+  --color-brand-200: #fecdaa;
+  --color-brand-300: #fcaa74;
+  --color-brand-400: #f8893f;
+  --color-brand-500: #f47721;
+  --color-brand-600: #e05d12;
+  --color-brand-700: #b94611;
+  --color-brand-800: #933916;
+  --color-brand-900: #773115;
+
+  --color-cream: #faf6f1;
+  --color-cream-2: #f4ede4;
+  --color-ink: #1f1a17;
+  --color-ink-2: #4a423c;
+  --color-muted: #8c827a;
+  --color-line: #eee5db;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
+  --color-warn: #d97706;
+
+  --radius-card: 1.5rem;
+  --shadow-soft: 0 10px 30px -14px rgb(84 52 24 / 0.18), 0 2px 6px -2px rgb(84 52 24 / 0.06);
+  --shadow-lift: 0 22px 44px -18px rgb(84 52 24 / 0.28), 0 4px 10px -4px rgb(84 52 24 / 0.08);
+  --shadow-brand: 0 10px 24px -8px rgb(244 119 33 / 0.55);
+
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.3s ease both;
+  --animate-pop: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-slide-up: slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop {
+    0% { transform: scale(0.85); }
+    100% { transform: scale(1); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(100%); }
+    to { transform: none; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink antialiased;
+    font-feature-settings: "ss01";
+  }
+  ::selection {
+    @apply bg-brand-200 text-ink;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-[var(--radius-card)] bg-white shadow-[var(--shadow-soft)];
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-sm font-medium text-ink-2 shadow-[var(--shadow-soft)] transition;
+  }
+  .section-title {
+    @apply text-lg font-bold tracking-tight text-ink md:text-xl;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .skeleton {
+    background: linear-gradient(90deg, #f1e9df 25%, #f8f2ea 37%, #f1e9df 63%);
+    background-size: 400% 100%;
+    @apply animate-shimmer rounded-2xl;
+  }
+  .glass {
+    @apply bg-white/70 backdrop-blur-md;
+  }
+  .pb-nav {
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 1024px) {
+    .pb-nav {
+      padding-bottom: 3rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,321 @@
+// UstaTop ma'lumotlar bazasi sxemasi.
+// Dev muhitda SQLite ishlatiladi. PostgreSQL ga o'tish uchun provider ni "postgresql"
+// ga almashtiring va DATABASE_URL ni yangilang — sxema ikkalasiga ham mos.
+// Holat (status/role) maydonlari String sifatida saqlanadi, ruxsat etilgan qiymatlar
+// src/lib/constants.ts da yagona manba sifatida belgilangan.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  phone        String   @unique
+  email        String?  @unique
+  passwordHash String
+  role         String   @default("CLIENT") // CLIENT | MASTER | ADMIN
+  status       String   @default("ACTIVE") // ACTIVE | BLOCKED
+  avatar       String?
+  region       String?
+  district     String?
+  address      String?
+  notifyOrders   Boolean @default(true)
+  notifyMessages Boolean @default(true)
+  notifyPromos   Boolean @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  lastSeenAt   DateTime @default(now())
+
+  master          MasterProfile?
+  clientOrders    Order[]         @relation("ClientOrders")
+  reviews         Review[]        @relation("ClientReviews")
+  favorites       Favorite[]
+  notifications   Notification[]
+  sentMessages    Message[]
+  clientChats     Conversation[]  @relation("ClientChats")
+  complaints      Complaint[]     @relation("ComplaintReporter")
+  complaintsAbout Complaint[]     @relation("ComplaintTarget")
+
+  @@index([role])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  image       String
+  icon        String   @default("wrench")
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  masters  MasterProfile[]
+  services Service[]
+}
+
+model MasterProfile {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  categoryId         String
+  specialty          String
+  bio                String   @default("")
+  coverImage         String?
+  experienceYears    Int      @default(0)
+  hourlyRate         Int      @default(0) // so'm
+  priceFrom          Int      @default(0) // eng arzon xizmat narxi (keshlangan)
+  workStart          String   @default("09:00")
+  workEnd            String   @default("18:00")
+  workDays           String   @default("1,2,3,4,5,6") // 1=Dushanba ... 7=Yakshanba
+  isAvailable        Boolean  @default(true) // "Hozir ishlayapti"
+  verification       String   @default("NONE") // NONE | PENDING | APPROVED | REJECTED
+  verificationNote   String?
+  region             String
+  district           String
+  address            String?
+  lat                Float?
+  lng                Float?
+  publicPhone        String?
+  telegram           String?
+  rating             Float    @default(0)
+  reviewCount        Int      @default(0)
+  completedJobs      Int      @default(0)
+  popularity         Int      @default(0) // profil ko'rishlari + buyurtmalar asosida
+  searchText         String   @default("") // normallashtirilgan qidiruv matni
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   Category        @relation(fields: [categoryId], references: [id])
+  services   Service[]
+  portfolio  PortfolioItem[]
+  reviews    Review[]
+  orders     Order[]
+  favorites  Favorite[]
+  chats      Conversation[]
+
+  @@index([categoryId])
+  @@index([region, district])
+  @@index([rating])
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  masterId     String
+  categoryId   String
+  title        String
+  description  String   @default("")
+  image        String?
+  price        Int
+  priceUnit    String   @default("FIXED") // FIXED | HOUR | M2 | M3 | METER | UNIT
+  durationText String   @default("1-2 soat")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  master     MasterProfile @relation(fields: [masterId], references: [id], onDelete: Cascade)
+  category   Category      @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+
+  @@index([masterId])
+  @@index([categoryId])
+}
+
+model PortfolioItem {
+  id          String   @id @default(cuid())
+  masterId    String
+  image       String
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+
+  master MasterProfile @relation(fields: [masterId], references: [id], onDelete: Cascade)
+
+  @@index([masterId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  masterId  String
+  clientId  String
+  orderId   String?  @unique
+  rating    Int
+  comment   String
+  status    String   @default("VISIBLE") // VISIBLE | HIDDEN
+  reply     String?
+  createdAt DateTime @default(now())
+
+  master MasterProfile @relation(fields: [masterId], references: [id], onDelete: Cascade)
+  client User          @relation("ClientReviews", fields: [clientId], references: [id], onDelete: Cascade)
+  order  Order?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  complaints Complaint[]
+
+  @@index([masterId, status])
+}
+
+model Order {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  clientId      String
+  masterId      String
+  status        String    @default("NEW") // NEW | PENDING | ACCEPTED | IN_PROGRESS | COMPLETED | CANCELLED
+  description   String
+  images        String    @default("[]") // JSON massiv
+  region        String
+  district      String
+  address       String
+  scheduledAt   DateTime
+  totalAmount   Int
+  paymentMethod String    @default("CASH") // CLICK | PAYME | UZCARD | HUMO | CASH
+  paymentStatus String    @default("UNPAID") // UNPAID | PENDING | PAID | REFUNDED
+  cancelReason  String?
+  cancelledBy   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  completedAt   DateTime?
+
+  client       User          @relation("ClientOrders", fields: [clientId], references: [id], onDelete: Cascade)
+  master       MasterProfile @relation(fields: [masterId], references: [id], onDelete: Cascade)
+  items        OrderItem[]
+  events       OrderEvent[]
+  payments     Payment[]
+  review       Review?
+  conversation Conversation?
+  complaints   Complaint[]
+
+  @@index([clientId, status])
+  @@index([masterId, status])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  serviceId String?
+  title     String
+  price     Int
+  quantity  Int     @default(1)
+
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  service Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+}
+
+model OrderEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  status    String
+  note      String?
+  actorId   String?
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  orderId       String
+  provider      String // CLICK | PAYME | UZCARD | HUMO | CASH
+  amount        Int
+  status        String   @default("PENDING") // PENDING | SUCCESS | FAILED | CANCELLED
+  transactionId String?
+  cardMask      String?
+  mode          String   @default("demo") // demo | live
+  raw           String?  // provayder javobi (JSON)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model Conversation {
+  id            String   @id @default(cuid())
+  clientId      String
+  masterId      String
+  orderId       String?  @unique
+  lastMessageAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  client   User          @relation("ClientChats", fields: [clientId], references: [id], onDelete: Cascade)
+  master   MasterProfile @relation(fields: [masterId], references: [id], onDelete: Cascade)
+  order    Order?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  messages Message[]
+
+  @@index([clientId])
+  @@index([masterId])
+}
+
+model Message {
+  id             String    @id @default(cuid())
+  conversationId String
+  senderId       String
+  text           String?
+  image          String?
+  readAt         DateTime?
+  createdAt      DateTime  @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  type      String // ORDER | MESSAGE | REVIEW | SYSTEM | PAYMENT
+  title     String
+  body      String
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}
+
+model Favorite {
+  userId    String
+  masterId  String
+  createdAt DateTime @default(now())
+
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  master MasterProfile @relation(fields: [masterId], references: [id], onDelete: Cascade)
+
+  @@id([userId, masterId])
+}
+
+model Complaint {
+  id           String   @id @default(cuid())
+  reporterId   String
+  targetUserId String?
+  orderId      String?
+  reviewId     String?
+  reason       String
+  details      String   @default("")
+  status       String   @default("OPEN") // OPEN | RESOLVED | REJECTED
+  adminNote    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  reporter   User    @relation("ComplaintReporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  targetUser User?   @relation("ComplaintTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+  order      Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  review     Review? @relation(fields: [reviewId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+}
+
+model Setting {
+  key   String @id
+  value String
+}
